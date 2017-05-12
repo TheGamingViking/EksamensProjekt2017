@@ -8,6 +8,6 @@ namespace EnterTheColiseum
 {
     interface IUpdateable
     {
-        void OnAnimationDone(string animationName);
+        void Update();
     }
 }

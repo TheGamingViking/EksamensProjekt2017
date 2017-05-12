@@ -29,7 +29,7 @@ namespace EnterTheColiseum
         int screenHeight;
         
         //Properties
-        public GameWorld Instance
+        static public GameWorld Instance
         {
             get
             {
@@ -40,7 +40,20 @@ namespace EnterTheColiseum
                 return instance;
             }
         }
+        public MouseState MouseState
+        {
+            get { return mouseState; }
+        }
+        public List<Collider> Colliders
+        {
+            get { return colliders; }
+        }
+        public float DeltaTime
+        {
+            get { return deltaTime; }
+        }
 
+        //Constructor
         public GameWorld()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -59,6 +72,10 @@ namespace EnterTheColiseum
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            gameObjects = new List<GameObject>();
+            colliders = new List<Collider>();
+            newObjects = new List<GameObject>();
+            objectsToRemove = new List<GameObject>();
 
             base.Initialize();
         }

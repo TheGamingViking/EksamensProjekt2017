@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    class Transform : Component
+    public class Transform : Component
     {
         //Fields
         Vector2 position;
