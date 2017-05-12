@@ -23,7 +23,7 @@ namespace EnterTheColiseum
         List<GameObject> newObjects;
         List<GameObject> objectsToRemove;
         Random rnd;
-        const bool resolutionIndependent = true;
+        bool resolutionIndependent = true;
         Vector2 baseScreenSize;
         int screenWidth;
         int screenHeight;
@@ -121,7 +121,7 @@ namespace EnterTheColiseum
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                //Exit();
 
             // TODO: Add your update logic here
 

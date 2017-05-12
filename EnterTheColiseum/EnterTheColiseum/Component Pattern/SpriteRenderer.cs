@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    class SpriteRenderer : Component, ILoadable, IDrawable
+    public class SpriteRenderer : Component, ILoadable, IDrawable
     {
         //Fields
         Texture2D sprite;
