@@ -46,6 +46,7 @@
     <Compile Include="Component Pattern\GameObject.cs" />
     <Compile Include="Component Pattern\Gear.cs" />
     <Compile Include="Component Pattern\Gladiator.cs" />
+    <Compile Include="Component Pattern\Reaver.cs" />
     <Compile Include="Component Pattern\SpriteRenderer.cs" />
     <Compile Include="Component Pattern\Transform.cs" />
     <Compile Include="Component Pattern\Trap.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Interfaces\IUpdateable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Strategies\GoTo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
