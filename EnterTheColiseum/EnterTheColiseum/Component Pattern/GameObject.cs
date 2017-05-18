@@ -32,6 +32,7 @@ namespace EnterTheColiseum
         //Contrstuctor
         public GameObject(Vector2 position) : base()
         {
+            components = new List<Component>();
             transform = new Transform(this, position);
             components.Add(transform);
         }
