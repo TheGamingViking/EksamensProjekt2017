@@ -77,6 +77,10 @@ namespace EnterTheColiseum
             newObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
 
+            GameObject obj = new GameObject(Vector2.Zero);
+            gameObjects.Add(obj);
+            obj.AddComponent(new Collider(obj));
+
             base.Initialize();
         }
 
@@ -102,6 +106,11 @@ namespace EnterTheColiseum
                 screenWidth = device.PresentationParameters.BackBufferWidth;
                 screenHeight = device.PresentationParameters.BackBufferHeight;
             }
+
+            foreach (GameObject obj in gameObjects)
+            {
+                obj.LoadContent(Content);
+            }
         }
 
         /// <summary>
@@ -123,7 +132,12 @@ namespace EnterTheColiseum
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 //Exit();
 
-            // TODO: Add your update logic here
+                // TODO: Add your update logic here
+                foreach (GameObject obj in gameObjects)
+                {
+                    obj.Update();
+                }
+
 
             base.Update(gameTime);
         }
@@ -152,6 +166,13 @@ namespace EnterTheColiseum
             Matrix globalTransformation = Matrix.CreateScale(screenScalingFactor);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
+
+            foreach (GameObject obj in gameObjects)
+            {
+                obj.Draw(spriteBatch);
+            }
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

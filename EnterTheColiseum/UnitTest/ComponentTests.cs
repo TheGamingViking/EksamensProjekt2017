@@ -11,15 +11,15 @@ namespace UnitTest
         [TestMethod]
         public void AddComponentTest()
         {
-            //Arrangement
-            GameObject obj = new GameObject(Vector2.Zero);
-            Collider component = new Collider(obj);
+            //Arrange
+            GameObject gameObject = new GameObject(Vector2.Zero);
+            SpriteRenderer component = new SpriteRenderer(gameObject, "CollisionTexture", 0.5f, 0.5f);
 
             //Act
-            obj.AddComponent(component);
+            gameObject.AddComponent(component);
 
             //Assert
-            Assert.AreSame(obj.GetComponent("Collider"), component);
+            Assert.AreSame(gameObject.GetComponent("SpriteRenderer"), component);
         }
     }
 }

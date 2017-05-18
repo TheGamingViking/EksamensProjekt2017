@@ -49,13 +49,13 @@ namespace EnterTheColiseum
         }
 
         //Constructor
-        public Collider(GameObject gameObject) : base(gameObject)
+        public Collider(GameObject gameObject, bool usePixelCollision) : base(gameObject)
         {
             otherColliders = new List<Collider>();
             pixels = new Dictionary<string, Color[][]>();
 
             doCollisionChecks = true;
-            usePixelCollision = true;
+            this.usePixelCollision = usePixelCollision;
             GameWorld.Instance.Colliders.Add(this);
             animator = (Animator)GameObject.GetComponent("Animator");
         }
