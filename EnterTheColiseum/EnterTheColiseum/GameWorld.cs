@@ -80,6 +80,12 @@ namespace EnterTheColiseum
 
             //Resolution
             device = graphics.GraphicsDevice;
+            //graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height + 20;
+            //graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.IsFullScreen = false;
+
+            graphics.ApplyChanges();
+
             if (resolutionIndependent)
             {
                 screenWidth = (int)baseScreenSize.X;
