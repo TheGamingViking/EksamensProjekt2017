@@ -73,6 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\CollisionTexture.png" />
+    <Content Include="Content\Nederste lag map 1280x720.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
