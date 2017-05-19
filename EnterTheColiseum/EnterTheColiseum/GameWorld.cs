@@ -60,7 +60,7 @@ namespace EnterTheColiseum
             Content.RootDirectory = "Content";
             instance = this;
             mouseState = Mouse.GetState();
-            baseScreenSize = new Vector2(800, 600);
+            baseScreenSize = new Vector2(1280, 720);
         }
 
         /// <summary>
@@ -72,10 +72,30 @@ namespace EnterTheColiseum
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //List instantiation
             gameObjects = new List<GameObject>();
             colliders = new List<Collider>();
             newObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
+
+            //Resolution
+            device = graphics.GraphicsDevice;
+            if (resolutionIndependent)
+            {
+                screenWidth = (int)baseScreenSize.X;
+                screenHeight = (int)baseScreenSize.Y;
+            }
+            else
+            {
+                screenWidth = device.PresentationParameters.BackBufferWidth;
+                screenHeight = device.PresentationParameters.BackBufferHeight;
+            }
+
+            //GameObjects
+            GameObject obj = new GameObject(Vector2.Zero);
+            obj.AddComponent(new SpriteRenderer(obj, "Nederste lag map 1280x720", 0.9f, 1f));
+            obj.AddComponent(new Collider(obj, false));
+            gameObjects.Add(obj);
 
             base.Initialize();
         }
@@ -90,17 +110,10 @@ namespace EnterTheColiseum
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            device = graphics.GraphicsDevice;
 
-            if (resolutionIndependent)
+            foreach (GameObject obj in gameObjects)
             {
-                screenWidth = (int)baseScreenSize.X;
-                screenHeight = (int)baseScreenSize.Y;
-            }
-            else
-            {
-                screenWidth = device.PresentationParameters.BackBufferWidth;
-                screenHeight = device.PresentationParameters.BackBufferHeight;
+                obj.LoadContent(Content);
             }
         }
 
@@ -121,10 +134,17 @@ namespace EnterTheColiseum
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                //Exit();
+            {
+                Exit();
+            }
 
             // TODO: Add your update logic here
+            foreach (GameObject obj in gameObjects)
+            {
+                obj.Update();
+            }
 
+            deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             base.Update(gameTime);
         }
 
@@ -151,7 +171,14 @@ namespace EnterTheColiseum
             }
             Matrix globalTransformation = Matrix.CreateScale(screenScalingFactor);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, globalTransformation);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, globalTransformation);
+
+            foreach (GameObject obj in gameObjects)
+            {
+                obj.Draw(spriteBatch);
+            }
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

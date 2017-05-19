@@ -3,14 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    class Gladiator : Component, IUpdateable, ILoadable, IStrategy
+    class Gladiator : Component, IUpdateable, ILoadable
     {
         //Fields
         string name;
+        bool fight;
         float strength;
         float agility;
         float strategy;
@@ -18,6 +20,13 @@ namespace EnterTheColiseum
         float defense;
         float health;
         List<Gear> equipment;
+        protected IStrategy combatStrategy;
+        Thread thread;
+
+        /// <summary>
+        /// Neural fields
+        /// </summary>
+        
 
         //Properties
         public string Name
@@ -40,13 +49,21 @@ namespace EnterTheColiseum
         {
             get { return equipment; }
         }
+        public IStrategy CombatStrategy
+        {
+            get { return combatStrategy; }
+            set { combatStrategy = value; }
+        }
 
         //Constructor
         public Gladiator(GameObject gameObject, string name) : base(gameObject)
         {
             equipment = new List<Gear>();
+            fight = false;
 
             this.name = name;
+
+            thread = new Thread(AI);
         }
 
         //Methods
@@ -73,6 +90,13 @@ namespace EnterTheColiseum
         private void CalculateStatstics()
         {
 
+        }
+        public void AI()
+        {
+            while (fight)
+            {
+
+            }
         }
     }
 }

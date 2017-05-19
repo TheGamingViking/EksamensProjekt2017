@@ -53,10 +53,11 @@ namespace EnterTheColiseum
         public void LoadContent(ContentManager content)
         {
             sprite = content.Load<Texture2D>(spritePath);
+            rectangle = new Rectangle(0, 0, sprite.Width, sprite.Height);
         }
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            spriteBatch.Draw(sprite, position + offset, rectangle, color, 0f, Vector2.Zero, scale, SpriteEffects.None, layerDepth);
+            spriteBatch.Draw(sprite, position + offset, rectangle, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, layerDepth);
         }
     }
 }
