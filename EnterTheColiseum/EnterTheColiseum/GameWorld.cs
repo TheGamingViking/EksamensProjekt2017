@@ -23,11 +23,11 @@ namespace EnterTheColiseum
         List<GameObject> newObjects;
         List<GameObject> objectsToRemove;
         Random rnd;
-        bool resolutionIndependent = true;
-        Vector2 baseScreenSize;
-        int screenWidth;
-        int screenHeight;
-        
+        public delegate void ResolutionEventHandler();
+
+
+        bool keyPressed = false;
+
         //Properties
         static public GameWorld Instance
         {
@@ -59,8 +59,9 @@ namespace EnterTheColiseum
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             instance = this;
+            Resolution.Initialize(graphics);
             mouseState = Mouse.GetState();
-            baseScreenSize = new Vector2(1280, 720);
+            ResolutionChangedEvent += ResolutionChanged;
         }
 
         /// <summary>
@@ -79,23 +80,9 @@ namespace EnterTheColiseum
             objectsToRemove = new List<GameObject>();
 
             //Resolution
-            device = graphics.GraphicsDevice;
-            //graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height + 20;
-            //graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.IsFullScreen = false;
 
             graphics.ApplyChanges();
-
-            if (resolutionIndependent)
-            {
-                screenWidth = (int)baseScreenSize.X;
-                screenHeight = (int)baseScreenSize.Y;
-            }
-            else
-            {
-                screenWidth = device.PresentationParameters.BackBufferWidth;
-                screenHeight = device.PresentationParameters.BackBufferHeight;
-            }
 
             //GameObjects
             GameObject obj = new GameObject(Vector2.Zero);
@@ -143,6 +130,31 @@ namespace EnterTheColiseum
             {
                 Exit();
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.F11) && !keyPressed)
+            {
+                keyPressed = true;
+                if (Window.IsBorderless == true)
+                {
+                    Window.Position = new Point((int)(Resolution.ScreenDimensions.X - Resolution.GameDimensions.X) / 2, (int)((Resolution.ScreenDimensions.Y - Resolution.GameDimensions.Y) / 2) - 40);
+                    Window.IsBorderless = false;
+                    //insert settings resolution here.
+                    graphics.PreferredBackBufferWidth = (int)Resolution.GameDimensions.X;
+                    graphics.PreferredBackBufferHeight = (int)Resolution.GameDimensions.Y;
+                    graphics.ApplyChanges();
+                    ResolutionChangedEvent();
+                }
+                else
+                {
+                    Window.Position = new Point(0, 0);
+                    Window.IsBorderless = true;
+                    graphics.PreferredBackBufferWidth = (int)Resolution.ScreenDimensions.X;
+                    graphics.PreferredBackBufferHeight = (int)Resolution.ScreenDimensions.Y;
+                    graphics.ApplyChanges();
+                    ResolutionChangedEvent();
+                }
+            }
+            if (!Keyboard.GetState().IsKeyDown(Keys.F11))
+                keyPressed = false;
 
             // TODO: Add your update logic here
             foreach (GameObject obj in gameObjects)
@@ -163,21 +175,7 @@ namespace EnterTheColiseum
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-            Vector3 screenScalingFactor;
-
-            if (resolutionIndependent)
-            {
-                float horizontalScaling = (float)device.PresentationParameters.BackBufferWidth / baseScreenSize.X;
-                float verticalScaling = (float)device.PresentationParameters.BackBufferHeight / baseScreenSize.Y;
-                screenScalingFactor = new Vector3(horizontalScaling, verticalScaling, 1);
-            }
-            else
-            {
-                screenScalingFactor = new Vector3(1, 1, 1);
-            }
-            Matrix globalTransformation = Matrix.CreateScale(screenScalingFactor);
-
-            spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, globalTransformation);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, Resolution.ScaleMatrix);
 
             foreach (GameObject obj in gameObjects)
             {
@@ -188,5 +186,12 @@ namespace EnterTheColiseum
 
             base.Draw(gameTime);
         }
+        private void ResolutionChanged()
+        {
+            Resolution.CalculateMatrix(graphics);
+        }
+
+        //Events
+        public event ResolutionEventHandler ResolutionChangedEvent;
     }
 }

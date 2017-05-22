@@ -9,6 +9,36 @@ namespace UnitTest
     public class ComponentTests
     {
         [TestMethod]
+        public void GetComponentTest()
+        {
+            //Arrange
+            GameObject gameObject = new GameObject(Vector2.Zero);
+            Component c;
+
+            //Act
+            c = gameObject.GetComponent("Transform");
+
+            //Assert
+            Assert.AreSame(c, gameObject.GetComponent("Transform"));
+        }
+        [TestMethod]
+        public void AddMultipleComponentsAndGetOne()
+        {
+            //Arrange
+            GameObject gameObject = new GameObject(Vector2.Zero);
+            Transform c = new Transform(gameObject, Vector2.Zero);
+            Transform b = new Transform(gameObject, Vector2.Zero);
+
+            //Act
+            gameObject.AddComponent(c);
+            gameObject.AddComponent(b);
+
+            //Assert
+            Assert.AreNotSame(b, gameObject.GetComponent("Transform"));
+            //Specific components of the same type cannot be differentiated. 
+            //One component of each type per GameObject at most.
+        }
+        [TestMethod]
         public void AddComponentTest()
         {
             //Arrange
