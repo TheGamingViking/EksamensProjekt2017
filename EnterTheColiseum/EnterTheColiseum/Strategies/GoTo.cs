@@ -29,7 +29,31 @@ namespace EnterTheColiseum
         {
             if (transform.Position != goal)
             {
+                Vector2 translation = Vector2.Zero;
 
+                if (transform.Position.X >= goal.X)
+                {
+                    translation += new Vector2(-1, 0);
+                    direction = Direction.Left;
+                }
+                if (transform.Position.X <= goal.X)
+                {
+                    translation += new Vector2(1, 0);
+                    direction = Direction.Right;
+                }
+                if (transform.Position.Y >= goal.Y)
+                {
+                    translation += new Vector2(0, -1);
+                    direction = Direction.Back;
+                }
+                if (transform.Position.Y <= goal.Y)
+                {
+                    translation += new Vector2(0, 1);
+                    direction = Direction.Front;
+                }
+
+                transform.Translate(translation * 100 * GameWorld.Instance.DeltaTime);
+                animator.PlayAnimation("Walk");
             }
         }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    class Gear : Component
+    public class Gear : Component
     {
     }
 }

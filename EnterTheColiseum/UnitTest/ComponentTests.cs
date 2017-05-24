@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EnterTheColiseum;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 
 namespace UnitTest
 {
@@ -50,6 +51,24 @@ namespace UnitTest
 
             //Assert
             Assert.AreSame(gameObject.GetComponent("SpriteRenderer"), component);
+        }
+        [TestMethod]
+        public void CreateAnimationThroughAnimatorComponent()
+        {
+            //Arrange
+            GameObject gameObject = new GameObject(Vector2.Zero);
+            SpriteRenderer spriteRenderer = new SpriteRenderer(gameObject, "EtC placeholder animation", 0.1f, 1);
+            gameObject.AddComponent(spriteRenderer);
+            Animator animator = new Animator(gameObject);
+            gameObject.AddComponent(animator);
+            Gladiator gladiator = new Gladiator(gameObject, "Scipio");
+            gameObject.AddComponent(gameObject);
+
+            //Act
+            gladiator.CreateAnimations();
+
+            //Assert
+            Assert.IsTrue(animator.Animations.ContainsKey("Idle"));
         }
     }
 }

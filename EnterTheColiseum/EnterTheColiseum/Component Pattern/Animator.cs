@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    class Animator : Component, IUpdateable
+    public class Animator : Component, IUpdateable
     {
         //Fields
         Dictionary<string, Animation> animations;

@@ -13,7 +13,6 @@ namespace EnterTheColiseum
     {
         //Fields
         GraphicsDeviceManager graphics;
-        GraphicsDevice device;
         SpriteBatch spriteBatch;
         static GameWorld instance;
         List<GameObject> gameObjects;
@@ -24,7 +23,6 @@ namespace EnterTheColiseum
         List<GameObject> objectsToRemove;
         Random rnd;
         public delegate void ResolutionEventHandler();
-
 
         bool keyPressed = false;
 
@@ -85,10 +83,16 @@ namespace EnterTheColiseum
             graphics.ApplyChanges();
 
             //GameObjects
-            GameObject obj = new GameObject(Vector2.Zero);
-            obj.AddComponent(new SpriteRenderer(obj, "Nederste lag map 1280x720", 0.9f, 1f));
-            obj.AddComponent(new Collider(obj, false));
-            gameObjects.Add(obj);
+            GameObject baseMap = new GameObject(Vector2.Zero);
+            baseMap.AddComponent(new SpriteRenderer(baseMap, "Nederste lag map 1280x720", 1, 1));
+            gameObjects.Add(baseMap);
+
+            GameObject gladiator = new GameObject(Vector2.Zero);
+            gladiator.AddComponent(new SpriteRenderer(gladiator, @"EtC placeholder animation", 0.1f, 0.5f));
+            gladiator.AddComponent(new Animator(gladiator));
+            gladiator.AddComponent(new Collider(gladiator, true, true));
+            gladiator.AddComponent(new Gladiator(gladiator, "KappaPride"));
+            gameObjects.Add(gladiator);
 
             base.Initialize();
         }
@@ -189,6 +193,10 @@ namespace EnterTheColiseum
         private void ResolutionChanged()
         {
             Resolution.CalculateMatrix(graphics);
+        }
+        public void AddGameObject(GameObject gameObject)
+        {
+            gameObjects.Add(gameObject);
         }
 
         //Events

@@ -15,6 +15,7 @@ namespace EnterTheColiseum
         Texture2D colliderTexture;
         bool doCollisionChecks;
         bool usePixelCollision;
+        bool test;
         List<Collider> otherColliders;
         Dictionary<string, Color[][]> pixels;
 
@@ -49,14 +50,18 @@ namespace EnterTheColiseum
         }
 
         //Constructor
-        public Collider(GameObject gameObject, bool usePixelCollision) : base(gameObject)
+        public Collider(GameObject gameObject, bool usePixelCollision, bool test) : base(gameObject)
         {
             otherColliders = new List<Collider>();
             pixels = new Dictionary<string, Color[][]>();
 
             doCollisionChecks = true;
             this.usePixelCollision = usePixelCollision;
-            GameWorld.Instance.Colliders.Add(this);
+            this.test = test;
+            if (!test)
+            {
+                GameWorldSetup();
+            }
             spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             animator = (Animator)GameObject.GetComponent("Animator");
         }
@@ -64,12 +69,15 @@ namespace EnterTheColiseum
         //Methods
         public void LoadContent(ContentManager content)
         {
-            spriteRenderer = (SpriteRenderer)GameObject.GetComponent("SpriteRenderer");
             colliderTexture = content.Load<Texture2D>("CollisionTexture");
             if (usePixelCollision)
             {
                 CachePixels();
             }
+        }
+        private void GameWorldSetup()
+        {
+            GameWorld.Instance.Colliders.Add(this);
         }
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {

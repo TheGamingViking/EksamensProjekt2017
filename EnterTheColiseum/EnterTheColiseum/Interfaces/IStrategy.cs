@@ -13,7 +13,7 @@ namespace EnterTheColiseum
         Left,
         Right
     }
-    interface IStrategy
+    public interface IStrategy
     {
         void Execute(ref Direction direction);
     }

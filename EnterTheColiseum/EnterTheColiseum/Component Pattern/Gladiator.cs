@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    class Gladiator : Component, IUpdateable, ILoadable
+    public class Gladiator : Component, IUpdateable, ILoadable
     {
         //Fields
         string name;
@@ -22,10 +23,13 @@ namespace EnterTheColiseum
         List<Gear> equipment;
         protected IStrategy combatStrategy;
         Thread thread;
+        Direction currentDirection;
 
-        /// <summary>
+        ///Component fields
+        Animator animator;
+
         /// Neural fields
-        /// </summary>
+        
         
 
         //Properties
@@ -58,6 +62,7 @@ namespace EnterTheColiseum
         //Constructor
         public Gladiator(GameObject gameObject, string name) : base(gameObject)
         {
+            animator = (Animator)GameObject.GetComponent("Animator");
             equipment = new List<Gear>();
             fight = false;
 
@@ -70,14 +75,17 @@ namespace EnterTheColiseum
         public void LoadContent(ContentManager content)
         {
             //Get fields from database
+
+            CreateAnimations();
         }
         public void Update()
         {
+            if (GameObject.Transform.Position.X >= 499)
+            {
+                combatStrategy = new Idle(animator);
+            }
 
-        }
-        public void Execute(ref Direction direction)
-        {
-
+            combatStrategy.Execute(ref currentDirection);
         }
         public void Equip(Gear item)
         {
@@ -97,6 +105,15 @@ namespace EnterTheColiseum
             {
 
             }
+        }
+        public void CreateAnimations()
+        {
+            animator.CreateAnimation("Idle", new Animation(1, 0, 0, 320, 360, 0, Vector2.Zero));
+            animator.CreateAnimation("Walk", new Animation(4, 360, 0, 320, 360, 5, Vector2.Zero));
+            animator.CreateAnimation("TakeDamage", new Animation(3, 0, 1, 320, 360, 3, Vector2.Zero));
+            animator.PlayAnimation("Idle");
+
+            combatStrategy = new GoTo(GameObject.Transform, animator, new Vector2(500, 200));
         }
     }
 }

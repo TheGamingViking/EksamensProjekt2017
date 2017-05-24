@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    class Animation
+    public class Animation
     {
         //Fields
+        int frames;
         float fps;
         Vector2 offset;
         Rectangle[] rectangles;
@@ -36,8 +37,11 @@ namespace EnterTheColiseum
                 return rectangles;
             }
         }
-
-        public int Frames { get; internal set; }
+        public int Frames
+        {
+            get { return frames; }
+            set { frames = value; }
+        }
 
         //Constructor
         public Animation(int frames, int yPos, int xStartFrame, int width, int height, float fps, Vector2 offset)
@@ -45,7 +49,7 @@ namespace EnterTheColiseum
             rectangles = new Rectangle[frames];
             this.offset = offset;
             this.fps = fps;
-            this.Frames = frames;
+            this.frames = frames;
 
             for (int i = 0; i < frames; i++)
             {
