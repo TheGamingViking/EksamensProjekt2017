@@ -17,13 +17,12 @@ namespace EnterTheColiseum
         static GameWorld instance;
         List<GameObject> gameObjects;
         List<Collider> colliders;
-        MouseState mouseState;
-        float deltaTime;
         List<GameObject> newObjects;
         List<GameObject> objectsToRemove;
+        MouseState mouseState;
+        float deltaTime;
         Random rnd;
         public delegate void ResolutionEventHandler();
-
         bool keyPressed = false;
 
         //Properties
@@ -58,6 +57,7 @@ namespace EnterTheColiseum
             Content.RootDirectory = "Content";
             instance = this;
             Resolution.Initialize(graphics);
+            IsMouseVisible = true;
             mouseState = Mouse.GetState();
             ResolutionChangedEvent += ResolutionChanged;
         }
@@ -87,8 +87,14 @@ namespace EnterTheColiseum
             baseMap.AddComponent(new SpriteRenderer(baseMap, "Nederste lag map 1280x720", 1, 1));
             gameObjects.Add(baseMap);
 
+            GameObject tavern = new GameObject(new Vector2(850, 490));
+            tavern.AddComponent(new SpriteRenderer(tavern, "Tavern", 0.5f, 0.25f));
+            tavern.AddComponent(new Collider(tavern, false, false));
+            tavern.AddComponent(new Button(tavern, StructureType.Tavern));
+            gameObjects.Add(tavern);
+
             GameObject gladiator = new GameObject(Vector2.Zero);
-            gladiator.AddComponent(new SpriteRenderer(gladiator, @"EtC placeholder animation", 0.1f, 0.5f));
+            gladiator.AddComponent(new SpriteRenderer(gladiator, "EtC placeholder animation", 0.2f, 0.5f));
             gladiator.AddComponent(new Animator(gladiator));
             gladiator.AddComponent(new Collider(gladiator, true, true));
             gladiator.AddComponent(new Gladiator(gladiator, "KappaPride"));
