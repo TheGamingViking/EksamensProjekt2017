@@ -11,7 +11,6 @@ namespace EnterTheColiseum
     class Tavern : Component, ILoadable
     {
         //Fields
-
         
         //Component Fields
         Button button;
@@ -28,11 +27,13 @@ namespace EnterTheColiseum
         public void LoadContent(ContentManager content)
         {
             button.TavernClicked += Clicked;
+            //Load from database
         }
         private void Clicked()
         {
             GameObject menu = new GameObject(Vector2.Zero);
-            menu.AddComponent(new SpriteRenderer(menu, "kran", 0.1f, 1f));
+            menu.AddComponent(new SpriteRenderer(menu, "kran", 0.1f, 1));
+            (menu.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.GetContent);
             GameWorld.Instance.AddGameObject(menu);
         }
     }

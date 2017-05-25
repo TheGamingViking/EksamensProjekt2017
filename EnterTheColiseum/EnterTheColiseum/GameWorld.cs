@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -23,7 +24,6 @@ namespace EnterTheColiseum
         float deltaTime;
         Random rnd;
         public delegate void ResolutionEventHandler();
-        bool keyPressed = false;
 
         //Properties
         static public GameWorld Instance
@@ -48,6 +48,10 @@ namespace EnterTheColiseum
         public float DeltaTime
         {
             get { return deltaTime; }
+        }
+        public ContentManager GetContent
+        {
+            get { return Content; }
         }
 
         //Constructor
@@ -78,9 +82,12 @@ namespace EnterTheColiseum
             objectsToRemove = new List<GameObject>();
 
             //Resolution
-            graphics.IsFullScreen = false;
-
+            Window.Position = new Point(0, 0);
+            Window.IsBorderless = true;
+            graphics.PreferredBackBufferWidth = (int)Resolution.ScreenDimensions.X;
+            graphics.PreferredBackBufferHeight = (int)Resolution.ScreenDimensions.Y;
             graphics.ApplyChanges();
+            ResolutionChangedEvent();
 
             //GameObjects
             GameObject baseMap = new GameObject(Vector2.Zero);
@@ -91,6 +98,7 @@ namespace EnterTheColiseum
             tavern.AddComponent(new SpriteRenderer(tavern, "Tavern", 0.5f, 0.25f));
             tavern.AddComponent(new Collider(tavern, false, false));
             tavern.AddComponent(new Button(tavern, StructureType.Tavern));
+            tavern.AddComponent(new Tavern(tavern, (Button)tavern.GetComponent("Button")));
             gameObjects.Add(tavern);
 
             GameObject gladiator = new GameObject(Vector2.Zero);
@@ -140,31 +148,6 @@ namespace EnterTheColiseum
             {
                 Exit();
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.F11) && !keyPressed)
-            {
-                keyPressed = true;
-                if (Window.IsBorderless == true)
-                {
-                    Window.Position = new Point((int)(Resolution.ScreenDimensions.X - Resolution.GameDimensions.X) / 2, (int)((Resolution.ScreenDimensions.Y - Resolution.GameDimensions.Y) / 2) - 40);
-                    Window.IsBorderless = false;
-                    //insert settings resolution here.
-                    graphics.PreferredBackBufferWidth = (int)Resolution.GameDimensions.X;
-                    graphics.PreferredBackBufferHeight = (int)Resolution.GameDimensions.Y;
-                    graphics.ApplyChanges();
-                    ResolutionChangedEvent();
-                }
-                else
-                {
-                    Window.Position = new Point(0, 0);
-                    Window.IsBorderless = true;
-                    graphics.PreferredBackBufferWidth = (int)Resolution.ScreenDimensions.X;
-                    graphics.PreferredBackBufferHeight = (int)Resolution.ScreenDimensions.Y;
-                    graphics.ApplyChanges();
-                    ResolutionChangedEvent();
-                }
-            }
-            if (!Keyboard.GetState().IsKeyDown(Keys.F11))
-                keyPressed = false;
 
             // TODO: Add your update logic here
             foreach (GameObject obj in gameObjects)
@@ -172,6 +155,24 @@ namespace EnterTheColiseum
                 obj.Update();
             }
 
+            if (newObjects.Count > 0)
+            {
+                foreach (GameObject newObj in newObjects)
+                {
+                    gameObjects.Add(newObj);
+                }
+                newObjects.Clear();
+            }
+            if (objectsToRemove.Count > 0)
+            {
+                foreach (GameObject objToRemove in objectsToRemove)
+                {
+                    gameObjects.Add(objToRemove);
+                }
+                objectsToRemove.Clear();
+            }
+
+            mouseState = Mouse.GetState();
             deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             base.Update(gameTime);
         }
@@ -202,7 +203,7 @@ namespace EnterTheColiseum
         }
         public void AddGameObject(GameObject gameObject)
         {
-            gameObjects.Add(gameObject);
+            newObjects.Add(gameObject);
         }
 
         //Events

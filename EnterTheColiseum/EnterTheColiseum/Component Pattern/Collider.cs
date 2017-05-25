@@ -30,9 +30,10 @@ namespace EnterTheColiseum
             {
                 return new Rectangle
                     (
-                        (int)(GameObject.Transform.Position.X + spriteRenderer.Offset.X),
-                        (int)(GameObject.Transform.Position.Y + spriteRenderer.Offset.Y),
-                        spriteRenderer.Rectangle.Width, spriteRenderer.Rectangle.Height
+                        (int)((GameObject.Transform.Position.X + spriteRenderer.Offset.X) * Resolution.ScaleMatrix.Right.X),
+                        (int)((GameObject.Transform.Position.Y + spriteRenderer.Offset.Y) * Resolution.ScaleMatrix.Down.Y),
+                        (int)(spriteRenderer.Rectangle.Width * spriteRenderer.Scale),
+                        (int)(spriteRenderer.Rectangle.Height * spriteRenderer.Scale)
                     );
             }
         }

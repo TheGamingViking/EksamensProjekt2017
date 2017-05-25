@@ -40,6 +40,10 @@ namespace EnterTheColiseum
             get { return color; }
             set { color = value; }
         }
+        public float Scale
+        {
+            get { return scale; }
+        }
 
         //Constructor
         public SpriteRenderer(GameObject gameObject, string spritePath, float layerDepth, float scale) : base(gameObject)
