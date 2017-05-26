@@ -8,6 +8,8 @@ namespace EnterTheColiseum
 {
     public class Gear : Component
     {
+
+
         //Fields
         string name;
         float armor;
@@ -41,7 +43,6 @@ namespace EnterTheColiseum
         }
 
         //Methods
-
 
     }
 }
