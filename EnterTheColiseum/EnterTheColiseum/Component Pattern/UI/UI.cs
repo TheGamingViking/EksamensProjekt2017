@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheColiseum
 {
-    class UI : Component
+    class UI : Component, IUpdateable
     {
         //Fields
         protected MouseState mouseState;
@@ -27,8 +27,14 @@ namespace EnterTheColiseum
         //Constructor
         public UI(GameObject gameObject) : base(gameObject)
         {
+
         }
-        
+
+        public virtual void Update()
+        {
+            mouseState = GameWorld.Instance.MouseState;
+        }
+
         //Methods
     }
 }

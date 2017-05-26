@@ -52,6 +52,7 @@
     <Compile Include="Component Pattern\Transform.cs" />
     <Compile Include="Component Pattern\Trap.cs" />
     <Compile Include="Component Pattern\UI\Button.cs" />
+    <Compile Include="Component Pattern\UI\Menu.cs" />
     <Compile Include="Component Pattern\UI\UI.cs" />
     <Compile Include="GameWorld.cs" />
     <Compile Include="Interfaces\IAnimateable.cs" />
@@ -83,10 +84,16 @@
     <Content Include="Content\EtC placeholder animation.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Exitknap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\kran.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Market.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Menu baggrund.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Nederste lag map 1280x720.png">

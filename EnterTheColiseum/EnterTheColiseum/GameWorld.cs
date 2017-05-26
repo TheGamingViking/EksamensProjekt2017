@@ -104,7 +104,7 @@ namespace EnterTheColiseum
             GameObject gladiator = new GameObject(Vector2.Zero);
             gladiator.AddComponent(new SpriteRenderer(gladiator, "EtC placeholder animation", 0.2f, 0.5f));
             gladiator.AddComponent(new Animator(gladiator));
-            gladiator.AddComponent(new Collider(gladiator, true, true));
+            gladiator.AddComponent(new Collider(gladiator, true, false));
             gladiator.AddComponent(new Gladiator(gladiator, "KappaPride"));
             gameObjects.Add(gladiator);
 
@@ -167,7 +167,7 @@ namespace EnterTheColiseum
             {
                 foreach (GameObject objToRemove in objectsToRemove)
                 {
-                    gameObjects.Add(objToRemove);
+                    gameObjects.Remove(objToRemove);
                 }
                 objectsToRemove.Clear();
             }
@@ -204,6 +204,10 @@ namespace EnterTheColiseum
         public void AddGameObject(GameObject gameObject)
         {
             newObjects.Add(gameObject);
+        }
+        public void RemoveGameObject(GameObject gameObject)
+        {
+            objectsToRemove.Add(gameObject);
         }
 
         //Events
