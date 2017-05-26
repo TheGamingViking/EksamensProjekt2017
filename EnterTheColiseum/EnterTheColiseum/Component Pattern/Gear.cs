@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Content;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    public class Gear : Component
+    public class Gear : Component, ILoadable
     {
-
-
         //Fields
         string name;
         float armor;
@@ -34,15 +33,19 @@ namespace EnterTheColiseum
             get { return cost; }
         }
         //Constructor
-        public Gear(float attack, float armor, int cost, string name)
+        public Gear(/*float attack, float armor, int cost,*/ string name)
         {
-            this.attack = attack;
+            /*this.attack = attack;
             this.armor = armor;
-            this.cost = cost;
+            this.cost = cost;*/
             this.name = name;
+            LoadContent(GameWorld.Instance.Content);
         }
 
         //Methods
-
+        public void LoadContent(ContentManager content)
+        {
+            //Load from database based on name as primary key
+        }
     }
 }
