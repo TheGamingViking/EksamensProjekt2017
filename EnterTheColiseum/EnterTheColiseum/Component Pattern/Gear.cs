@@ -10,24 +10,35 @@ namespace EnterTheColiseum
     {
         //Fields
         string name;
-        int armor;
-        int attack;
+        float armor;
+        float attack;
+        int cost;
 
         //Properties
         public string Name
         {
             get { return name; }
         }
-        public int Armor
+        public float Armor
         {
             get { return armor; }
         }
-        public int Attack
+        public float Attack
         {
             get { return attack; }
         }
+        public int Cost
+        {
+            get { return cost; }
+        }
         //Constructor
-
+        public Gear(float attack, float armor, int cost, string name)
+        {
+            this.attack = attack;
+            this.armor = armor;
+            this.cost = cost;
+            this.name = name;
+        }
 
         //Methods
 
