@@ -13,7 +13,7 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin CollisionTexture.png
+#begin
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -23,6 +23,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
+/build:EtC arena v1.png
 /build:CollisionTexture.png
 /build:Nederste lag map 1280x720.png
 /build:EtC placeholder animation.png
@@ -32,3 +33,5 @@
 /build:Tavern.png
 /build:Menu baggrund.png
 /build:Exitknap.png
+/build:Barrak.png
+/build:options icon.png

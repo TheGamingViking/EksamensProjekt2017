@@ -48,7 +48,12 @@
     <Compile Include="Component Pattern\Gladiator.cs" />
     <Compile Include="Component Pattern\Reaver.cs" />
     <Compile Include="Component Pattern\SpriteRenderer.cs" />
+    <Compile Include="Component Pattern\Structures\Barracks.cs" />
+    <Compile Include="Component Pattern\Structures\Colosseum.cs" />
+    <Compile Include="Component Pattern\Structures\Market.cs" />
+    <Compile Include="Component Pattern\Structures\Options.cs" />
     <Compile Include="Component Pattern\Structures\Tavern.cs" />
+    <Compile Include="Component Pattern\Structures\Upgrade.cs" />
     <Compile Include="Component Pattern\Transform.cs" />
     <Compile Include="Component Pattern\Trap.cs" />
     <Compile Include="Component Pattern\UI\Button.cs" />
@@ -78,7 +83,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Barrak.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\CollisionTexture.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\EtC arena v1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\EtC placeholder animation.png">

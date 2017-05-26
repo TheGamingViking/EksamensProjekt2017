@@ -10,12 +10,12 @@ namespace EnterTheColiseum
 {
     enum StructureType
     {
-        Tavern,
         Market,
+        Tavern,
         Options,
         Upgrade,
         Colosseum,
-        Armory,
+        Barracks,
         Return
     }    
     class Button : UI, IUpdateable
@@ -47,8 +47,8 @@ namespace EnterTheColiseum
                     pressed = true;
                     switch (type)
                     {
-                        case StructureType.Armory:
-                            ArmoryClicked();
+                        case StructureType.Barracks:
+                            BarracksClicked();
                             break;
                         case StructureType.Colosseum:
                             ColosseumClicked();
@@ -79,7 +79,7 @@ namespace EnterTheColiseum
         }
 
         //Events
-        public event ClickHandler ArmoryClicked;
+        public event ClickHandler BarracksClicked;
         public event ClickHandler ColosseumClicked;
         public event ClickHandler MarketClicked;
         public event ClickHandler OptionsClicked;

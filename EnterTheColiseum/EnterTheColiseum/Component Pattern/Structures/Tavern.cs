@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace EnterTheColiseum
 {
-    class Tavern : Component, ILoadable
+    class Tavern : Component, ILoadable, ISaveable
     {
         //Fields
         
@@ -42,6 +42,10 @@ namespace EnterTheColiseum
 
             GameWorld.Instance.AddGameObject(menu);
             GameWorld.Instance.AddGameObject(returnButton);
+        }
+        public void Save()
+        {
+            //Save to database
         }
     }
 }
