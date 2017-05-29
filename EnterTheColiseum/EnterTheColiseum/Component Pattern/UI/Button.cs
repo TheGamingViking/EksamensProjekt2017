@@ -33,7 +33,7 @@ namespace EnterTheColiseum
             this.type = type;
             if (type == StructureType.Return)
             {
-                GameObject.Transform.Position = new Vector2(1165, 20);
+                GameObject.Transform.Position = new Vector2(1180, 30);
             }
         }
 
