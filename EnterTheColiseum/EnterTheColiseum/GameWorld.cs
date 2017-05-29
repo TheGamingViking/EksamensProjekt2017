@@ -23,6 +23,7 @@ namespace EnterTheColiseum
         MouseState mouseState;
         float deltaTime;
         Random rnd;
+        bool inMenu = false;
         public delegate void ResolutionEventHandler();
 
         //Properties
@@ -52,6 +53,11 @@ namespace EnterTheColiseum
         public ContentManager GetContent
         {
             get { return Content; }
+        }
+        public bool InMenu
+        {
+            get { return inMenu; }
+            set { inMenu = value; }
         }
 
         //Constructor
@@ -112,32 +118,32 @@ namespace EnterTheColiseum
             market.AddComponent(new SpriteRenderer(market, "Market", 0.5f, 1f));
             market.AddComponent(new Collider(market, false, false));
             market.AddComponent(new Button(market, StructureType.Market));
-            market.AddComponent(new Colosseum(market, (Button)market.GetComponent("Button")));
+            market.AddComponent(new Market(market, (Button)market.GetComponent("Button")));
             gameObjects.Add(market);
 
             GameObject options = new GameObject(new Vector2(20, 20));
             options.AddComponent(new SpriteRenderer(options, "options icon", 0.5f, 1f));
             options.AddComponent(new Collider(options, false, false));
             options.AddComponent(new Button(options, StructureType.Options));
-            options.AddComponent(new Colosseum(options, (Button)options.GetComponent("Button")));
+            options.AddComponent(new Options(options, (Button)options.GetComponent("Button")));
             gameObjects.Add(options);
 
             GameObject barracks = new GameObject(new Vector2(80, 490));
             barracks.AddComponent(new SpriteRenderer(barracks, "Barrak", 0.5f, 0.3f));
             barracks.AddComponent(new Collider(barracks, false, false));
             barracks.AddComponent(new Button(barracks, StructureType.Barracks));
-            barracks.AddComponent(new Colosseum(barracks, (Button)barracks.GetComponent("Button")));
+            barracks.AddComponent(new Barracks(barracks, (Button)barracks.GetComponent("Button")));
             gameObjects.Add(barracks);
 
             GameObject upgrade = new GameObject(new Vector2(880, 40));
             upgrade.AddComponent(new SpriteRenderer(upgrade, "kran", 0.5f, 0.8f));
             upgrade.AddComponent(new Collider(upgrade, false, false));
             upgrade.AddComponent(new Button(upgrade, StructureType.Upgrade));
-            upgrade.AddComponent(new Colosseum(upgrade, (Button)upgrade.GetComponent("Button")));
+            upgrade.AddComponent(new Upgrade(upgrade, (Button)upgrade.GetComponent("Button")));
             gameObjects.Add(upgrade);
 
             GameObject gladiator = new GameObject(Vector2.Zero);
-            gladiator.AddComponent(new SpriteRenderer(gladiator, "EtC placeholder animation", 0.2f, 0.2f));
+            gladiator.AddComponent(new SpriteRenderer(gladiator, "EtC placeholder animation", 0.2f, 0.1f));
             gladiator.AddComponent(new Animator(gladiator));
             gladiator.AddComponent(new Collider(gladiator, false, false));
             gladiator.AddComponent(new Gladiator(gladiator, "KappaPride"));

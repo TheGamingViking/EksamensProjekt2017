@@ -33,7 +33,7 @@ namespace EnterTheColiseum
             this.type = type;
             if (type == StructureType.Return)
             {
-                GameObject.Transform.Position = new Vector2(1180, 30);
+                GameObject.Transform.Position = new Vector2(1165, 20);
             }
         }
 
@@ -42,9 +42,10 @@ namespace EnterTheColiseum
         {
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
-                if (CollisionBox.Contains(mouseState.Position) && !pressed)
+                if (CollisionBox.Contains(mouseState.Position) && !pressed && !GameWorld.Instance.InMenu)
                 {
                     pressed = true;
+                    GameWorld.Instance.InMenu = true;
                     switch (type)
                     {
                         case StructureType.Barracks:
@@ -65,10 +66,12 @@ namespace EnterTheColiseum
                         case StructureType.Upgrade:
                             UpgradeClicked();
                             break;
-                        case StructureType.Return:
-                            ReturnClicked();
-                            break;
                     }
+                }
+                else if (CollisionBox.Contains(mouseState.Position) && type == StructureType.Return)
+                {
+                    ReturnClicked();
+                    GameWorld.Instance.InMenu = false;
                 }
             }
             if (mouseState.LeftButton == ButtonState.Released)

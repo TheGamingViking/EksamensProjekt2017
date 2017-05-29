@@ -19,7 +19,7 @@ namespace EnterTheColiseum
 
         //Constructor
         public Market(GameObject gameObject, Button button) : base(gameObject)
-            {
+        {
             this.button = button;
         }
 
