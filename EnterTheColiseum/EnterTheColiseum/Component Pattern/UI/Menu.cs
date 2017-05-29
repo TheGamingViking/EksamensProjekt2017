@@ -12,6 +12,7 @@ namespace EnterTheColiseum
     class Menu : UI, ILoadable, IDrawable
     {
         //Fields
+        List<GameObject> currentUIElements; 
         string spritePath = "Menu baggrund";
         float scale = 0.9f;
         Texture2D sprite;
@@ -25,6 +26,8 @@ namespace EnterTheColiseum
         //Constructor
         public Menu(GameObject gameObject, Button returnButton) : base(gameObject)
         {
+            currentUIElements = new List<GameObject>();
+
             GameObject.Transform.Position = new Vector2(61, 20);
             this.returnButton = returnButton;
             LoadContent(GameWorld.Instance.Content);
@@ -39,12 +42,21 @@ namespace EnterTheColiseum
         }
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            spriteBatch.Draw(sprite, position, rectangle, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0.1f);
+            spriteBatch.Draw(sprite, position, rectangle, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0.2f);
         }
         private void Clicked()
         {
-            GameWorld.Instance.RemoveGameObject(GameObject);
-            GameWorld.Instance.RemoveGameObject(returnButton.GameObject);
+            foreach (GameObject element in currentUIElements)
+            {
+                if (GameWorld.Instance.GameObjects.Contains(element))
+                {
+                    GameWorld.Instance.RemoveGameObject(element);
+                }
+            }
+        }
+        public void AddUIElement(GameObject element)
+        {
+            currentUIElements.Add(element);
         }
     }
 }

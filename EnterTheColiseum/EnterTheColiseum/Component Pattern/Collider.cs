@@ -142,29 +142,34 @@ namespace EnterTheColiseum
         }
         private bool CheckPixelCollision(Collider other)
         {
-            // Find the bounds of the rectangle intersection
-            int top = Math.Max(CollisionBox.Top, other.CollisionBox.Top);
-            int bottom = Math.Min(CollisionBox.Bottom, other.CollisionBox.Bottom);
-            int left = Math.Max(CollisionBox.Left, other.CollisionBox.Left);
-            int right = Math.Min(CollisionBox.Right, other.CollisionBox.Right);
-            for (int y = top; y < bottom; y++)
+            if (other.UsePixelCollision)
             {
-                for (int x = left; x < right; x++)
+                // Find the bounds of the rectangle intersection
+                int top = Math.Max(CollisionBox.Top, other.CollisionBox.Top);
+                int bottom = Math.Min(CollisionBox.Bottom, other.CollisionBox.Bottom);
+                int left = Math.Max(CollisionBox.Left, other.CollisionBox.Left);
+                int right = Math.Min(CollisionBox.Right, other.CollisionBox.Right);
+                for (int y = top; y < bottom; y++)
                 {
-                    int firstIndex = (x - CollisionBox.Left) + (y - CollisionBox.Top) * CollisionBox.Width;
-                    int secondIndex = (x - other.CollisionBox.Left) + (y - other.CollisionBox.Top) * other.CollisionBox.Width;
-                    //Get the color of both pixels at this point
-                    Color colorA = CurrentPixels[firstIndex];
-                    Color colorB = other.CurrentPixels[secondIndex];
-                    //If both pixels are not completely transparent
-                    if (colorA.A != 0 && colorB.A != 0)
+                    for (int x = left; x < right; x++)
                     {
-                        //Then an intersection has been found
-                        return true;
+                        int firstIndex = (x - CollisionBox.Left) + (y - CollisionBox.Top) * CollisionBox.Width;
+                        int secondIndex = (x - other.CollisionBox.Left) + (y - other.CollisionBox.Top) * other.CollisionBox.Width;
+                        //Get the color of both pixels at this point
+                        Color colorA = CurrentPixels[firstIndex];
+                        Color colorB = other.CurrentPixels[secondIndex];
+                        //If both pixels are not completely transparent
+                        if (colorA.A != 0 && colorB.A != 0)
+                        {
+                            //Then an intersection has been found
+                            return true;
+                        }
                     }
                 }
+                return false;
             }
             return false;
         }
+            
     }
 }

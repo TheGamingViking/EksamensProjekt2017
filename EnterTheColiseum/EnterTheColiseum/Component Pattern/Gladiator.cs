@@ -80,7 +80,7 @@ namespace EnterTheColiseum
         }
         public void Update()
         {
-            if (GameObject.Transform.Position.X >= 499)
+            if (GameObject.Transform.Position.X == 500 && GameObject.Transform.Position.Y <= 199)
             {
                 combatStrategy = new Idle(animator);
             }

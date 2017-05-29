@@ -34,7 +34,7 @@ namespace EnterTheColiseum
             GameObject returnButton = new GameObject(Vector2.Zero);
             returnButton.AddComponent(new SpriteRenderer(returnButton, "Exitknap", 0.05f, 1f));
             returnButton.AddComponent(new Collider(returnButton, false, false));
-            returnButton.AddComponent(new Button(returnButton, StructureType.Return));
+            returnButton.AddComponent(new Button(returnButton, ButtonType.Return));
             (returnButton.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
             (returnButton.GetComponent("Collider") as Collider).LoadContent(GameWorld.Instance.Content);
             GameObject menu = new GameObject(Vector2.Zero);

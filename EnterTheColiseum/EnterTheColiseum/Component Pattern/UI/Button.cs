@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheColiseum
 {
-    enum StructureType
+    enum ButtonType
     {
         Market,
         Tavern,
@@ -16,22 +16,23 @@ namespace EnterTheColiseum
         Upgrade,
         Colosseum,
         Barracks,
-        Return
+        Return,
+        Fight
     }    
     class Button : UI, IUpdateable
     {
         //Fields
-        StructureType type;
+        ButtonType type;
         bool pressed = false;
         public delegate void ClickHandler();
 
         //Properties
 
         //Constructor
-        public Button(GameObject gameObject, StructureType type) : base(gameObject)
+        public Button(GameObject gameObject, ButtonType type) : base(gameObject)
         {
             this.type = type;
-            if (type == StructureType.Return)
+            if (type == ButtonType.Return)
             {
                 GameObject.Transform.Position = new Vector2(1165, 20);
             }
@@ -42,36 +43,45 @@ namespace EnterTheColiseum
         {
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
-                if (CollisionBox.Contains(mouseState.Position) && !pressed && !GameWorld.Instance.InMenu)
+                if (CollisionBox.Contains(mouseState.Position) && !pressed && !GameWorld.Instance.InMenu && !GameWorld.Instance.InFight)
                 {
                     pressed = true;
                     GameWorld.Instance.InMenu = true;
                     switch (type)
                     {
-                        case StructureType.Barracks:
+                        case ButtonType.Barracks:
                             BarracksClicked();
                             break;
-                        case StructureType.Colosseum:
+                        case ButtonType.Colosseum:
                             ColosseumClicked();
                             break;
-                        case StructureType.Market:
+                        case ButtonType.Market:
                             MarketClicked();
                             break;
-                        case StructureType.Options:
+                        case ButtonType.Options:
                             OptionsClicked();
                             break;
-                        case StructureType.Tavern:
+                        case ButtonType.Tavern:
                             TavernClicked();
                             break;
-                        case StructureType.Upgrade:
+                        case ButtonType.Upgrade:
                             UpgradeClicked();
                             break;
                     }
                 }
-                else if (CollisionBox.Contains(mouseState.Position) && type == StructureType.Return)
+                else if (CollisionBox.Contains(mouseState.Position) && !GameWorld.Instance.InFight)
                 {
-                    ReturnClicked();
-                    GameWorld.Instance.InMenu = false;
+                    switch (type)
+                    {
+                        case ButtonType.Fight:
+                            FightClicked();
+                            GameWorld.Instance.InFight = true;
+                            break;
+                        case ButtonType.Return:
+                            ReturnClicked();
+                            GameWorld.Instance.InMenu = false;
+                            break;
+                    }
                 }
             }
             if (mouseState.LeftButton == ButtonState.Released)
@@ -89,5 +99,6 @@ namespace EnterTheColiseum
         public event ClickHandler TavernClicked;
         public event ClickHandler UpgradeClicked;
         public event ClickHandler ReturnClicked;
+        public event ClickHandler FightClicked;
     }
 }
