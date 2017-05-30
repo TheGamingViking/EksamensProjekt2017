@@ -40,14 +40,40 @@ namespace EnterTheColiseum
             GameObject menu = new GameObject(Vector2.Zero);
             menu.AddComponent(new Menu(menu, (Button)returnButton.GetComponent("Button")));
 
+            GameObject lvl2Sprite = new GameObject(new Vector2(100, 300));
+            lvl2Sprite.AddComponent(new SpriteRenderer(lvl2Sprite, "Upgradebtn", 0.05f, 1));
+            (lvl2Sprite.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
+
+            GameObject upgradeButton = new GameObject(new Vector2(100,300));
+            upgradeButton.AddComponent(new SpriteRenderer(upgradeButton, "EtC arena v2", 0.05f, 1));
+            upgradeButton.AddComponent(new Collider(upgradeButton, false, false));
+            upgradeButton.AddComponent(new Button(upgradeButton, ButtonType.Upgrade));
+
+            (upgradeButton.GetComponent("Button") as Button).UpgradeClicked += LevelUp;
+            (upgradeButton.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
+            (upgradeButton.GetComponent("Collider") as Collider).LoadContent(GameWorld.Instance.Content);
+
             GameWorld.Instance.AddGameObject(menu);
             GameWorld.Instance.AddGameObject(returnButton);
+            GameWorld.Instance.AddGameObject(upgradeButton);
+            GameWorld.Instance.AddGameObject(lvl2Sprite);
             (menu.GetComponent("Menu") as Menu).AddUIElement(menu);
             (menu.GetComponent("Menu") as Menu).AddUIElement(returnButton);
+            (menu.GetComponent("Menu") as Menu).AddUIElement(lvl2Sprite);
+            (menu.GetComponent("Menu") as Menu).AddUIElement(upgradeButton);
         }
         public void Save()
         {
             //Save to database
+        }
+        private void LevelUp()
+        {
+            GameObject colosseum = new GameObject(new Vector2(555, 115));
+            colosseum.AddComponent(new SpriteRenderer(colosseum, "EtC arena v2", 0.01f, 0.8f));
+            colosseum.AddComponent(new Collider(colosseum, false, false));
+            colosseum.AddComponent(new Button(colosseum, ButtonType.Colosseum));
+            colosseum.AddComponent(new Colosseum(colosseum, (Button)colosseum.GetComponent("Button")));
+            
         }
     }
 }

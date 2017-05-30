@@ -83,6 +83,26 @@ namespace EnterTheColiseum
                             break;
                     }
                 }
+                else if (CollisionBox.Contains(mouseState.Position))
+                {
+                    switch (type)
+                    {
+                        case ButtonType.Market:
+                            MarketClicked();
+
+                            break;
+                    }
+                }
+                else if (CollisionBox.Contains(mouseState.Position))
+                {
+                    switch (type)
+                    {
+                        case ButtonType.Upgrade:
+                            UpgradeClicked();
+
+                            break;
+                    }
+                }
             }
             if (mouseState.LeftButton == ButtonState.Released)
             {
