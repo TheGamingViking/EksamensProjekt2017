@@ -61,6 +61,8 @@ namespace EnterTheColiseum
             GameWorld.Instance.AddGameObject(sell);
             (menu.GetComponent("Menu") as Menu).AddUIElement(menu);
             (menu.GetComponent("Menu") as Menu).AddUIElement(returnButton);
+            (menu.GetComponent("Menu") as Menu).AddUIElement(buy);
+            (menu.GetComponent("Menu") as Menu).AddUIElement(sell);
 
         }
         public void Save()
