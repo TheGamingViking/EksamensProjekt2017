@@ -68,11 +68,6 @@ namespace EnterTheColiseum
         }
         private void LevelUp()
         {
-            GameObject colosseum = new GameObject(new Vector2(555, 115));
-            colosseum.AddComponent(new SpriteRenderer(colosseum, "EtC arena v2", 0.01f, 0.8f));
-            colosseum.AddComponent(new Collider(colosseum, false, false));
-            colosseum.AddComponent(new Button(colosseum, ButtonType.Colosseum));
-            colosseum.AddComponent(new Colosseum(colosseum, (Button)colosseum.GetComponent("Button")));
             
         }
     }
