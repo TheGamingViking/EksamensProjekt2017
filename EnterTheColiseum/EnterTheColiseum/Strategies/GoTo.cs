@@ -52,7 +52,7 @@ namespace EnterTheColiseum
                     direction = Direction.Front;
                 }
 
-                transform.Translate(translation * 100 * GameWorld.Instance.DeltaTime);
+                transform.Translate(translation * 40 * GameWorld.Instance.DeltaTime);
                 animator.PlayAnimation("Walk");
             }
         }

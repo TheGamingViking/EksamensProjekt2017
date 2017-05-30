@@ -51,7 +51,7 @@ namespace EnterTheColiseum
         {
             try
             {
-                (gameObject.GetComponent("Gladiator") as Gladiator).TakeDamage(damage);
+                (gameObject.GetComponent("Gladiator") as Gladiator).TakeDamage(damage, null);
             }
             catch (NullReferenceException)
             {
