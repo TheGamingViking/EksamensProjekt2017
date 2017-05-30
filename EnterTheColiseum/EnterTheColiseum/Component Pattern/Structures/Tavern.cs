@@ -42,7 +42,7 @@ namespace EnterTheColiseum
 
             GameWorld.Instance.AddGameObject(menu);
             GameWorld.Instance.AddGameObject(returnButton);
-            (menu.GetComponent("Menu") as Menu).AddUIElement(menu);
+          //  (menu.GetComponent("Menu") as Menu).AddUIElement(menu);
             (menu.GetComponent("Menu") as Menu).AddUIElement(returnButton);
         }
         public void Save()
