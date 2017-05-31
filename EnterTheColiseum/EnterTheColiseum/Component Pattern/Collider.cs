@@ -106,13 +106,13 @@ namespace EnterTheColiseum
                     {
                         if (CollisionBox.Intersects(other.CollisionBox) && ((usePixelCollision && CheckPixelCollision(other)) || !usePixelCollision))
                         {
-                            GameObject.OnCollisionStay(other);
-
                             if (!otherColliders.Contains(other))
                             {
                                 otherColliders.Add(other);
                                 GameObject.OnCollisionEnter(other);
                             }
+
+                            GameObject.OnCollisionStay(other);
                         }
                         else if ((otherColliders.Contains(other) && !usePixelCollision) || (CollisionBox.Intersects(other.CollisionBox) && (usePixelCollision && !CheckPixelCollision(other))))
                         {
