@@ -13,8 +13,9 @@ namespace EnterTheColiseum
     {
         //Fields
         string name;
-        bool fight;
+        bool fight = false;
         bool canMove = true;
+        bool soundIsPlaying = false;
         float strength;
         float agility;
         float strategy;
@@ -22,15 +23,16 @@ namespace EnterTheColiseum
         float defense;
         float health;
         List<Gear> equipment;
-        List<GameObject> enemyList;
+        //List<GameObject> enemyList;
         protected IStrategy combatStrategy;
         Thread thread;
         Direction currentDirection = Direction.Front;
-        Vector2 goal;
-        Vector2 enemySnapPos;
+        //Vector2 goal;
+        //Vector2 enemySnapPos;
         Vector2 modifiedPosition;
         Gladiator enemy;
         Colosseum arena;
+        Random rnd;
 
         ///Component fields
         Animator animator;
@@ -56,6 +58,10 @@ namespace EnterTheColiseum
         {
             get { return strategy; }
         }
+        public float Health
+        {
+            get { return health; }
+        }
         public List<Gear> Equipment
         {
             get { return equipment; }
@@ -65,13 +71,23 @@ namespace EnterTheColiseum
             get { return combatStrategy; }
             set { combatStrategy = value; }
         }
+        public bool SoundIsPlaying
+        {
+            get { return soundIsPlaying; }
+            set { soundIsPlaying = value; }
+        }
+        public Random Rnd
+        {
+            get { return rnd; }
+        }
 
         //Constructor
         public Gladiator(GameObject gameObject, string name, bool fight, Colosseum arena) : base(gameObject)
         {
             animator = (Animator)GameObject.GetComponent("Animator");
             equipment = new List<Gear>();
-            enemyList = new List<GameObject>();
+            //enemyList = new List<GameObject>();
+            rnd = new Random();
             health = 100;
 
             this.fight = fight;
@@ -84,9 +100,8 @@ namespace EnterTheColiseum
         //Methods
         public void LoadContent(ContentManager content)
         {
-            //Get fields from database
-
             CreateAnimations();
+            //Get fields from database
         }
         public void Update()
         {
@@ -144,6 +159,10 @@ namespace EnterTheColiseum
                     canMove = false;
                     combatStrategy = new Die(animator);
                 }
+                if (enemy.Health <= 0)
+                {
+                    thread.Abort();
+                }
                 if (canMove)
                 {
 
@@ -182,7 +201,7 @@ namespace EnterTheColiseum
         }
         public void OnCollisionEnter(Collider other)
         {
-            combatStrategy = new Attack(animator);
+            combatStrategy = new Attack(animator, this);
             canMove = false;
         }
         public void OnCollisionExit(Collider other)
@@ -201,13 +220,13 @@ namespace EnterTheColiseum
         {
             if (animationName.Contains("Die"))
             {
-                enemy = null;
                 GameWorld.Instance.RemoveGameObject(GameObject);
                 thread.Abort();
             }
             if (animationName.Contains("Attack"))
             {
                 canMove = true;
+                soundIsPlaying = false;
             }
         }
     }

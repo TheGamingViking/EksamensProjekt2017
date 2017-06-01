@@ -20,7 +20,6 @@ namespace EnterTheColiseum
         SpriteBatch spriteBatch;
         static GameWorld instance;
         List<GameObject> gameObjects;
-        //List<GameObject> fightList;
         List<Collider> colliders;
         List<GameObject> newObjects;
         List<GameObject> objectsToRemove;
@@ -110,7 +109,7 @@ namespace EnterTheColiseum
             colliders = new List<Collider>();
             newObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
-            //fightList = new List<GameObject>();
+            soundEffects = new List<SoundEffect>();
 
             //Resolution
             Window.Position = new Point(0, 0);
@@ -166,8 +165,6 @@ namespace EnterTheColiseum
             upgrade.AddComponent(new Button(upgrade, ButtonType.Upgrade));
             upgrade.AddComponent(new Upgrade(upgrade, (Button)upgrade.GetComponent("Button")));
             gameObjects.Add(upgrade);
-            
-            soundEffects = new List<SoundEffect>();
 
             base.Initialize();
         }
@@ -213,26 +210,11 @@ namespace EnterTheColiseum
             {
                 Exit();
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.N))
-            {
-                soundEffects[1].Play();
-            }
-            // TODO: Add your update logic here
-            /*if (inFight)
-            {
-                foreach (GameObject obj in fightList)
-                {
-                    obj.Update();
-                }
-            }
-            else
-            {*/
-                foreach (GameObject obj in gameObjects)
-                {
-                    obj.Update();
-                }
-            //}
 
+            foreach (GameObject obj in gameObjects)
+            {
+                obj.Update();
+            }
 
             if (newObjects.Count > 0)
             {
@@ -267,21 +249,11 @@ namespace EnterTheColiseum
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, Resolution.ScaleMatrix);
 
-            /*if (inFight)
+            foreach (GameObject obj in gameObjects)
             {
-                foreach (GameObject obj in fightList)
-                {
-                    obj.Draw(spriteBatch);
-                }
+                obj.Draw(spriteBatch);
             }
-            else
-            {*/
-                foreach (GameObject obj in gameObjects)
-                {
-                    obj.Draw(spriteBatch);
-                }
-            //}
-
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -298,10 +270,6 @@ namespace EnterTheColiseum
         {
             objectsToRemove.Add(gameObject);
         }
-        /*public void AddToFightList(GameObject gameObject)
-        {
-            fightList.Add(gameObject);
-        }*/
 
         //Events
         public event ResolutionEventHandler ResolutionChangedEvent;
