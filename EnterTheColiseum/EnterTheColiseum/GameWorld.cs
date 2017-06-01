@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 //using System.Data.SQLite;
@@ -28,6 +30,11 @@ namespace EnterTheColiseum
         bool inMenu = false;
         bool inFight = false;
         public delegate void ResolutionEventHandler();
+        //Sound
+        SoundEffect effect;
+        List<SoundEffect> soundEffects;
+        Song song;
+
 
         //Properties
         static public GameWorld Instance
@@ -154,6 +161,8 @@ namespace EnterTheColiseum
             upgrade.AddComponent(new Button(upgrade, ButtonType.Upgrade));
             upgrade.AddComponent(new Upgrade(upgrade, (Button)upgrade.GetComponent("Button")));
             gameObjects.Add(upgrade);
+            
+            soundEffects = new List<SoundEffect>();
 
             base.Initialize();
         }
@@ -172,6 +181,11 @@ namespace EnterTheColiseum
             {
                 obj.LoadContent(Content);
             }
+            soundEffects.Add(Content.Load<SoundEffect>("2642__ceacy__sword"));
+            //soundEffects.Add(Content.Load<SoundEffect>("52458__audione__sword-01"));
+            soundEffects.Add(Content.Load<SoundEffect>("77611__joelaudio__sfx-attack-sword-001"));
+            song = Content.Load<Song>("bensound-epic");
+            MediaPlayer.Play(song);
         }
 
         /// <summary>
