@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    public class Gladiator : Component, IUpdateable, ILoadable, ICollisionEnter, ICollisionExit, ICollisionStay
+    public class Gladiator : Component, IUpdateable, ILoadable, ICollisionEnter, ICollisionExit, ICollisionStay, IAnimateable
     {
         //Fields
         string name;
@@ -129,6 +129,7 @@ namespace EnterTheColiseum
 
             GameObject.Transform.Translate(modifiedPosition);
             health -= damage;
+            animator.PlayAnimation("TakeDamage");
         }
         private void CalculateStatstics()
         {
@@ -140,8 +141,8 @@ namespace EnterTheColiseum
             {
                 if (health <= 0)
                 {
-                    thread.Abort();
-                    GameWorld.Instance.RemoveGameObject(GameObject);
+                    canMove = false;
+                    combatStrategy = new Die(animator);
                 }
                 if (canMove)
                 {
@@ -164,8 +165,10 @@ namespace EnterTheColiseum
         public void CreateAnimations()
         {
             animator.CreateAnimation("Idle", new Animation(1, 0, 0, 320, 360, 0, Vector2.Zero));
-            animator.CreateAnimation("Walk", new Animation(4, 360, 0, 320, 360, 5, Vector2.Zero));
             animator.CreateAnimation("TakeDamage", new Animation(3, 0, 1, 320, 360, 3, Vector2.Zero));
+            animator.CreateAnimation("Walk", new Animation(4, 360, 0, 320, 360, 5, Vector2.Zero));
+            animator.CreateAnimation("Die", new Animation(4, 720, 0, 320, 360, 5, Vector2.Zero));
+            animator.CreateAnimation("Attack", new Animation(4, 1080, 0, 320, 360, 5, Vector2.Zero));
             animator.PlayAnimation("Idle");
         }
         public void SetEnemies(Gladiator enemy)
@@ -184,13 +187,27 @@ namespace EnterTheColiseum
         }
         public void OnCollisionExit(Collider other)
         {
-            canMove = true;
+
         }
         public void OnCollisionStay(Collider other)
         {
             if (combatStrategy is Attack)
             {
                 (other.GameObject.GetComponent("Gladiator") as Gladiator).TakeDamage(20, this);
+            }
+        }
+
+        public void OnAnimationDone(string animationName)
+        {
+            if (animationName.Contains("Die"))
+            {
+                enemy = null;
+                GameWorld.Instance.RemoveGameObject(GameObject);
+                thread.Abort();
+            }
+            if (animationName.Contains("Attack"))
+            {
+                canMove = true;
             }
         }
     }
