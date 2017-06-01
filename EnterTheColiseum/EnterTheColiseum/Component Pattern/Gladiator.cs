@@ -28,8 +28,9 @@ namespace EnterTheColiseum
         Direction currentDirection = Direction.Front;
         Vector2 goal;
         Vector2 enemySnapPos;
-        Random rnd;
+        Vector2 modifiedPosition;
         Gladiator enemy;
+        Colosseum arena;
 
         ///Component fields
         Animator animator;
@@ -64,22 +65,18 @@ namespace EnterTheColiseum
             get { return combatStrategy; }
             set { combatStrategy = value; }
         }
-        public int GetRandomNumber
-        {
-            get { return rnd.Next(1, 4); }
-        }
 
         //Constructor
-        public Gladiator(GameObject gameObject, string name, bool fight) : base(gameObject)
+        public Gladiator(GameObject gameObject, string name, bool fight, Colosseum arena) : base(gameObject)
         {
             animator = (Animator)GameObject.GetComponent("Animator");
             equipment = new List<Gear>();
             enemyList = new List<GameObject>();
-            rnd = new Random();
             health = 100;
 
             this.fight = fight;
             this.name = name;
+            this.arena = arena;
 
             thread = new Thread(AI);
         }
@@ -93,17 +90,7 @@ namespace EnterTheColiseum
         }
         public void Update()
         {
-            /*if (combatStrategy is GoTo)
-            {
-                foreach (GameObject enemy in enemyList)
-                {
-                    if (enemySnapPos == goal)
-                    {
-                        enemySnapPos = enemyList[0].Transform.Position;
-                        combatStrategy = new GoTo(GameObject.Transform, animator, enemySnapPos);
-                    }
-                }
-            }*/
+
         }
         public void Equip(Gear item)
         {
@@ -113,25 +100,34 @@ namespace EnterTheColiseum
         {
             if (currentDirection == Direction.Front)
             {
-                GameObject.Transform.Translate(new Vector2(0, 100));
+                modifiedPosition = (new Vector2(0, 100));
                 attacker.GameObject.Transform.Translate(new Vector2(0, 40));
             }
             else if (currentDirection == Direction.Back)
             {
-                GameObject.Transform.Translate(new Vector2(0, -100));
+                modifiedPosition = (new Vector2(0, -100));
                 attacker.GameObject.Transform.Translate(new Vector2(0, -40));
             }
             else if (currentDirection == Direction.Right)
             {
-                GameObject.Transform.Translate(new Vector2(100, 0));
+                modifiedPosition = (new Vector2(100, 0));
                 attacker.GameObject.Transform.Translate(new Vector2(40, 0));
             }
-            else if (currentDirection == Direction.Front)
+            else if (currentDirection == Direction.Left)
             {
-                GameObject.Transform.Translate(new Vector2(-100, 0));
+                modifiedPosition = (new Vector2(-100, 0));
                 attacker.GameObject.Transform.Translate(new Vector2(-40, 0));
             }
 
+            if ((GameObject.GetComponent("Collider") as Collider).CollisionBox.Bottom + modifiedPosition.Y > arena.ArenaBounds.Bottom ||
+                (GameObject.GetComponent("Collider") as Collider).CollisionBox.Top + modifiedPosition.Y < arena.ArenaBounds.Top ||
+                (GameObject.GetComponent("Collider") as Collider).CollisionBox.Right + modifiedPosition.X > arena.ArenaBounds.Right ||
+                (GameObject.GetComponent("Collider") as Collider).CollisionBox.Left + modifiedPosition.X < arena.ArenaBounds.Left)
+            {
+                modifiedPosition = Vector2.Zero;
+            }
+
+            GameObject.Transform.Translate(modifiedPosition);
             health -= damage;
         }
         private void CalculateStatstics()
@@ -153,7 +149,7 @@ namespace EnterTheColiseum
                     if (enemy.GameObject.Transform.Position.X != GameObject.Transform.Position.X ||
                         enemy.GameObject.Transform.Position.Y != GameObject.Transform.Position.Y)
                     {
-                        combatStrategy = new GoTo(GameObject.Transform, animator, enemy.GameObject.Transform.Position);
+                        combatStrategy = new GoTo(GameObject.Transform, animator, enemy.GameObject.Transform.Position, arena);
                     }
                     else
                     {
@@ -185,12 +181,10 @@ namespace EnterTheColiseum
         {
             combatStrategy = new Attack(animator);
             canMove = false;
-            (other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.Yellow;
         }
         public void OnCollisionExit(Collider other)
         {
             canMove = true;
-            (other.GameObject.GetComponent("SpriteRenderer") as SpriteRenderer).Color = Color.White;
         }
         public void OnCollisionStay(Collider other)
         {

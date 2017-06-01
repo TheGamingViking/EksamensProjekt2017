@@ -10,18 +10,22 @@ namespace EnterTheColiseum
     class GoTo : IStrategy
     {
         //Fields
+        Vector2 goal;
+
+        //Component Fields
         Transform transform;
         Animator animator;
-        Vector2 goal;
+        Colosseum arena;
 
         //Properties
 
         //Constructor
-        public GoTo(Transform transform, Animator animator, Vector2 goal)
+        public GoTo(Transform transform, Animator animator, Vector2 goal, Colosseum arena)
         {
             this.transform = transform;
             this.animator = animator;
             this.goal = goal;
+            this.arena = arena;
         }
 
         //Methods
@@ -50,6 +54,15 @@ namespace EnterTheColiseum
                 {
                     translation += new Vector2(0, 1);
                     direction = Direction.Front;
+                }
+
+                if ((transform.GameObject.GetComponent("Collider") as Collider).CollisionBox.Bottom + translation.Y > arena.ArenaBounds.Bottom ||
+               (transform.GameObject.GetComponent("Collider") as Collider).CollisionBox.Top + translation.Y < arena.ArenaBounds.Top ||
+               (transform.GameObject.GetComponent("Collider") as Collider).CollisionBox.Right + translation.X > arena.ArenaBounds.Right ||
+               (transform.GameObject.GetComponent("Collider") as Collider).CollisionBox.Left + translation.X < arena.ArenaBounds.Left)
+                {
+                    Vector2 inversion = Vector2.Multiply(translation, 2);
+                    translation = Vector2.Negate(inversion);
                 }
 
                 transform.Translate(translation * 40 * GameWorld.Instance.DeltaTime);

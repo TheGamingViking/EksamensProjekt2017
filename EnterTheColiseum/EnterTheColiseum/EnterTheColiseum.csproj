@@ -99,6 +99,9 @@
     <Content Include="Content\EtC arena.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\EtC placeholder animation 2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\EtC placeholder animation.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheColiseum
 {
-    enum ButtonType
+    public enum ButtonType
     {
         Market,
         Tavern,
@@ -19,7 +19,7 @@ namespace EnterTheColiseum
         Return,
         Fight
     }    
-    class Button : UI, IUpdateable
+    public class Button : UI, IUpdateable
     {
         //Fields
         ButtonType type;
