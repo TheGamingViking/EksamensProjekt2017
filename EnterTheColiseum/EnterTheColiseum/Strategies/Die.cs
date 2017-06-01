@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    class Attack : IStrategy
+    class Die : IStrategy
     {
         //Fields
 
@@ -17,7 +16,7 @@ namespace EnterTheColiseum
         //Properties
 
         //Constructor
-        public Attack(Animator animator)
+        public Die(Animator animator)
         {
             this.animator = animator;
         }
@@ -25,7 +24,7 @@ namespace EnterTheColiseum
         //Methods
         public void Execute(ref Direction direction)
         {
-            animator.PlayAnimation("Attack");
+            animator.PlayAnimation("Die");
         }
     }
 }

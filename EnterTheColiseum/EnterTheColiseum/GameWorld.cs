@@ -79,6 +79,11 @@ namespace EnterTheColiseum
             get { return gameObjects; }
         }
 
+        public List<SoundEffect> SoundEffects
+        {
+            get { return soundEffects; }
+        }
+
         //Constructor
         public GameWorld()
         {
@@ -181,11 +186,11 @@ namespace EnterTheColiseum
             {
                 obj.LoadContent(Content);
             }
-            soundEffects.Add(Content.Load<SoundEffect>("2642__ceacy__sword"));
-            //soundEffects.Add(Content.Load<SoundEffect>("52458__audione__sword-01"));
-            soundEffects.Add(Content.Load<SoundEffect>("77611__joelaudio__sfx-attack-sword-001"));
+            SoundEffects.Add(Content.Load<SoundEffect>("2642__ceacy__sword"));
+            SoundEffects.Add(Content.Load<SoundEffect>("77611__joelaudio__sfx-attack-sword-001"));
             song = Content.Load<Song>("bensound-epic");
             MediaPlayer.Play(song);
+            MediaPlayer.IsRepeating = true;
         }
 
         /// <summary>
@@ -208,7 +213,10 @@ namespace EnterTheColiseum
             {
                 Exit();
             }
-
+            if (Keyboard.GetState().IsKeyDown(Keys.N))
+            {
+                soundEffects[1].Play();
+            }
             // TODO: Add your update logic here
             /*if (inFight)
             {

@@ -83,8 +83,8 @@ namespace EnterTheColiseum
             arena.AddComponent(new SpriteRenderer(arena, "EtC arena", 0.5f, 1));
             (arena.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
 
-            GameObject gladiator = new GameObject(new Vector2(290, 450));
-            gladiator.AddComponent(new SpriteRenderer(gladiator, "EtC placeholder animation", 0.4f, 0.15f));
+            GameObject gladiator = new GameObject(new Vector2(290, 250));
+            gladiator.AddComponent(new SpriteRenderer(gladiator, "EtC placeholder animation 2", 0.4f, 0.15f));
             gladiator.AddComponent(new Animator(gladiator));
             gladiator.AddComponent(new Collider(gladiator, false, false));
             gladiator.AddComponent(new Gladiator(gladiator, "KappaPride", true, this));
@@ -92,8 +92,8 @@ namespace EnterTheColiseum
             (gladiator.GetComponent("Gladiator") as Gladiator).LoadContent(GameWorld.Instance.Content);
             (gladiator.GetComponent("Collider") as Collider).LoadContent(GameWorld.Instance.Content);
 
-            GameObject gladiator2 = new GameObject(new Vector2(950, 450));
-            gladiator2.AddComponent(new SpriteRenderer(gladiator2, "EtC placeholder animation 2", 0.4f, 0.15f));
+            GameObject gladiator2 = new GameObject(new Vector2(950, 550));
+            gladiator2.AddComponent(new SpriteRenderer(gladiator2, "EtC Animation v2", 0.4f, 0.15f));
             gladiator2.AddComponent(new Animator(gladiator2));
             gladiator2.AddComponent(new Collider(gladiator2, false, false));
             gladiator2.AddComponent(new Gladiator(gladiator2, "KappaPrude", true, this));
