@@ -141,6 +141,9 @@
     <Content Include="Content\options icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Save&amp;Exit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\selbtn.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -223,7 +223,7 @@
 /processorParam:TextureFormat=Color
 /build:EtC Animation v2.png
 
-#begin EtC arena v1.png
+#begin buybtn.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -235,7 +235,7 @@
 /processorParam:TextureFormat=Color
 /build:buybtn.png
 
-#begin EtC arena v1.png
+#begin EtC arena v2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -247,7 +247,7 @@
 /processorParam:TextureFormat=Color
 /build:EtC arena v2.png
 
-#begin EtC arena v1.png
+#begin selbtn.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -259,7 +259,7 @@
 /processorParam:TextureFormat=Color
 /build:selbtn.png
 
-#begin EtC arena v1.png
+#begin Upgradebtn.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -270,3 +270,15 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Upgradebtn.png
+
+#begin Save&Exit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Save&Exit.png
