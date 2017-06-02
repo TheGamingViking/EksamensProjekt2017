@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheColiseum
 {
-    enum ButtonType
+    public enum ButtonType
     {
         Market,
         Tavern,
@@ -17,9 +17,10 @@ namespace EnterTheColiseum
         Colosseum,
         Barracks,
         Return,
-        Fight
-    }    
-    class Button : UI, IUpdateable
+        Fight,
+        Exit
+    }
+    public class Button : UI, IUpdateable
     {
         //Fields
         ButtonType type;
@@ -67,6 +68,9 @@ namespace EnterTheColiseum
                         case ButtonType.Upgrade:
                             UpgradeClicked();
                             break;
+                        case ButtonType.Exit:
+                            ExitClicked();
+                            break;
                     }
                 }
                 else if (CollisionBox.Contains(mouseState.Position) && !GameWorld.Instance.InFight)
@@ -81,7 +85,12 @@ namespace EnterTheColiseum
                             ReturnClicked();
                             GameWorld.Instance.InMenu = false;
                             break;
+                        case ButtonType.Exit:
+                            ExitClicked();
+                            GameWorld.Instance.ExitClicked = true;
+                            break;
                     }
+
                 }
                 else if (CollisionBox.Contains(mouseState.Position))
                 {
@@ -89,21 +98,22 @@ namespace EnterTheColiseum
                     {
                         case ButtonType.Market:
                             MarketClicked();
-
-                            break;
-                    }
-                }
-                else if (CollisionBox.Contains(mouseState.Position))
-                {
-                    switch (type)
-                    {
-                        case ButtonType.Upgrade:
-                            UpgradeClicked();
-
                             break;
                     }
                 }
             }
+            /*
+            else if (CollisionBox.Contains(mouseState.Position))
+            {
+                switch (type)
+                {
+                    case ButtonType.Upgrade:
+                        UpgradeClicked();
+                        break;
+                }
+            }*/
+
+
             if (mouseState.LeftButton == ButtonState.Released)
             {
                 pressed = false;
@@ -120,5 +130,6 @@ namespace EnterTheColiseum
         public event ClickHandler UpgradeClicked;
         public event ClickHandler ReturnClicked;
         public event ClickHandler FightClicked;
+        public event ClickHandler ExitClicked;
     }
 }
