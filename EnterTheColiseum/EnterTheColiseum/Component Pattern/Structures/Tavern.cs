@@ -42,10 +42,10 @@ namespace EnterTheColiseum
             menu.AddComponent(new Menu(menu, (Button)returnButton.GetComponent("Button")));
 
             GameObject exitButton = new GameObject(new Vector2(500, 500));
-            exitButton.AddComponent(new SpriteRenderer(exitButton, "Exitknap", 0.05f, 1));
+            exitButton.AddComponent(new SpriteRenderer(exitButton, "Exitknap", 0.06f, 1));
             exitButton.AddComponent(new Collider(exitButton, false, false));
             exitButton.AddComponent(new Button(exitButton, ButtonType.Exit));
-            (exitButton.GetComponent("Button") as Button).TavernClicked += QuitGame;
+            (exitButton.GetComponent("Button") as Button).ExitClicked += QuitGame;
             (exitButton.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
             (exitButton.GetComponent("Collider") as Collider).LoadContent(GameWorld.Instance.Content);
 
@@ -60,11 +60,9 @@ namespace EnterTheColiseum
         {
             //Save to database
         }
-
         public void QuitGame()
         {
             GameWorld.Instance.Exit();
         }
-
     }
 }

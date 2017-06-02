@@ -122,7 +122,7 @@ namespace EnterTheColiseum
             {
                 if (canTakeDamage)
                 {*/
-                    canTakeDamage = false;
+                    //canTakeDamage = false;
                     if (currentDirection == Direction.Front)
                     {
                         modifiedPosition = (new Vector2(0, -100));
@@ -155,7 +155,7 @@ namespace EnterTheColiseum
                     GameObject.Transform.Translate(modifiedPosition);
                     health -= damage;
                     Console.WriteLine($"{name}, {health}");
-                    combatStrategy = new TakeDamage(animator);
+                    //combatStrategy = new TakeDamage(animator);
                 //}
             //}
         }
@@ -178,7 +178,6 @@ namespace EnterTheColiseum
                 }
                 if (canMove)
                 {
-
                     if (enemy.GameObject.Transform.Position.X != GameObject.Transform.Position.X ||
                         enemy.GameObject.Transform.Position.Y != GameObject.Transform.Position.Y)
                     {
