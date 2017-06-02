@@ -15,6 +15,7 @@ namespace EnterTheColiseum
         string name;
         bool fight = false;
         bool canMove = true;
+        bool canTakeDamage = true;
         bool soundIsPlaying = false;
         float strength;
         float agility;
@@ -40,7 +41,6 @@ namespace EnterTheColiseum
         /// Neural fields
         
         
-
         //Properties
         public string Name
         {
@@ -75,6 +75,11 @@ namespace EnterTheColiseum
         {
             get { return soundIsPlaying; }
             set { soundIsPlaying = value; }
+        }
+        public bool CanTakeDamage
+        {
+            get { return canTakeDamage; }
+            set { canTakeDamage = value; }
         }
         public Random Rnd
         {
@@ -113,38 +118,46 @@ namespace EnterTheColiseum
         }
         public void TakeDamage(int damage, Gladiator attacker)
         {
-            if (currentDirection == Direction.Front)
+            /*lock (this)
             {
-                modifiedPosition = (new Vector2(0, 100));
-                attacker.GameObject.Transform.Translate(new Vector2(0, 40));
-            }
-            else if (currentDirection == Direction.Back)
-            {
-                modifiedPosition = (new Vector2(0, -100));
-                attacker.GameObject.Transform.Translate(new Vector2(0, -40));
-            }
-            else if (currentDirection == Direction.Right)
-            {
-                modifiedPosition = (new Vector2(100, 0));
-                attacker.GameObject.Transform.Translate(new Vector2(40, 0));
-            }
-            else if (currentDirection == Direction.Left)
-            {
-                modifiedPosition = (new Vector2(-100, 0));
-                attacker.GameObject.Transform.Translate(new Vector2(-40, 0));
-            }
+                if (canTakeDamage)
+                {*/
+                    canTakeDamage = false;
+                    if (currentDirection == Direction.Front)
+                    {
+                        modifiedPosition = (new Vector2(0, -100));
+                        //attacker.GameObject.Transform.Translate(new Vector2(0, 40));
+                    }
+                    else if (currentDirection == Direction.Back)
+                    {
+                        modifiedPosition = (new Vector2(0, 100));
+                        //attacker.GameObject.Transform.Translate(new Vector2(0, -40));
+                    }
+                    else if (currentDirection == Direction.Right)
+                    {
+                        modifiedPosition = (new Vector2(-100, 0));
+                        //attacker.GameObject.Transform.Translate(new Vector2(40, 0));
+                    }
+                    else if (currentDirection == Direction.Left)
+                    {
+                        modifiedPosition = (new Vector2(100, 0));
+                        //attacker.GameObject.Transform.Translate(new Vector2(-40, 0));
+                    }
 
-            if ((GameObject.GetComponent("Collider") as Collider).CollisionBox.Bottom + modifiedPosition.Y > arena.ArenaBounds.Bottom ||
-                (GameObject.GetComponent("Collider") as Collider).CollisionBox.Top + modifiedPosition.Y < arena.ArenaBounds.Top ||
-                (GameObject.GetComponent("Collider") as Collider).CollisionBox.Right + modifiedPosition.X > arena.ArenaBounds.Right ||
-                (GameObject.GetComponent("Collider") as Collider).CollisionBox.Left + modifiedPosition.X < arena.ArenaBounds.Left)
-            {
-                modifiedPosition = Vector2.Zero;
-            }
+                    if ((GameObject.GetComponent("Collider") as Collider).CollisionBox.Bottom + modifiedPosition.Y > arena.ArenaBounds.Bottom ||
+                        (GameObject.GetComponent("Collider") as Collider).CollisionBox.Top + modifiedPosition.Y < arena.ArenaBounds.Top ||
+                        (GameObject.GetComponent("Collider") as Collider).CollisionBox.Right + modifiedPosition.X > arena.ArenaBounds.Right ||
+                        (GameObject.GetComponent("Collider") as Collider).CollisionBox.Left + modifiedPosition.X < arena.ArenaBounds.Left)
+                    {
+                        modifiedPosition = Vector2.Zero;
+                    }
 
-            GameObject.Transform.Translate(modifiedPosition);
-            health -= damage;
-            animator.PlayAnimation("TakeDamage");
+                    GameObject.Transform.Translate(modifiedPosition);
+                    health -= damage;
+                    Console.WriteLine($"{name}, {health}");
+                    combatStrategy = new TakeDamage(animator);
+                //}
+            //}
         }
         private void CalculateStatstics()
         {
@@ -161,7 +174,7 @@ namespace EnterTheColiseum
                 }
                 if (enemy.Health <= 0)
                 {
-                    thread.Abort();
+                    fight = false;
                 }
                 if (canMove)
                 {
@@ -206,7 +219,6 @@ namespace EnterTheColiseum
         }
         public void OnCollisionExit(Collider other)
         {
-
         }
         public void OnCollisionStay(Collider other)
         {
@@ -215,19 +227,21 @@ namespace EnterTheColiseum
                 (other.GameObject.GetComponent("Gladiator") as Gladiator).TakeDamage(20, this);
             }
         }
-
         public void OnAnimationDone(string animationName)
         {
             if (animationName.Contains("Die"))
             {
-                GameWorld.Instance.RemoveGameObject(GameObject);
-                thread.Abort();
+                fight = false;
             }
             if (animationName.Contains("Attack"))
             {
                 canMove = true;
                 soundIsPlaying = false;
             }
+            /*if (animationName.Contains("TakeDamage"))
+            {
+                canTakeDamage = true;
+            }*/
         }
     }
 }
