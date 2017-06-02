@@ -20,7 +20,7 @@ namespace EnterTheColiseum
         }
 
         //Constructor
-        public Reaver(GameObject gameObject, string name) : base(gameObject, name)
+        public Reaver(GameObject gameObject, string name, bool fight, Colosseum arena) : base(gameObject, name, fight, arena)
         {
         }
 

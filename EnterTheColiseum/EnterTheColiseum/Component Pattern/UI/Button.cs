@@ -44,7 +44,8 @@ namespace EnterTheColiseum
         {
             if (mouseState.LeftButton == ButtonState.Pressed)
             {
-                if (CollisionBox.Contains(mouseState.Position) && !pressed && !GameWorld.Instance.InMenu && !GameWorld.Instance.InFight)
+                if (CollisionBox.Contains(mouseState.Position) && !pressed 
+                    && !GameWorld.Instance.InMenu && !GameWorld.Instance.InFight)
                 {
                     pressed = true;
                     GameWorld.Instance.InMenu = true;

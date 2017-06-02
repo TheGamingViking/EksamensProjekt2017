@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+//using System.Data.SQLite;
 
 namespace EnterTheColiseum
 {
@@ -17,7 +20,6 @@ namespace EnterTheColiseum
         SpriteBatch spriteBatch;
         static GameWorld instance;
         List<GameObject> gameObjects;
-        List<GameObject> fightList;
         List<Collider> colliders;
         List<GameObject> newObjects;
         List<GameObject> objectsToRemove;
@@ -28,6 +30,11 @@ namespace EnterTheColiseum
         bool inFight = false;
         bool exitClicked = false;
         public delegate void ResolutionEventHandler();
+        //Sound
+        SoundEffect effect;
+        List<SoundEffect> soundEffects;
+        Song song;
+
 
         //Properties
         static public GameWorld Instance
@@ -77,6 +84,10 @@ namespace EnterTheColiseum
             get { return gameObjects; }
         }
 
+        public List<SoundEffect> SoundEffects
+        {
+            get { return soundEffects; }
+        }
 
         //Constructor
         public GameWorld()
@@ -104,7 +115,7 @@ namespace EnterTheColiseum
             colliders = new List<Collider>();
             newObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
-            fightList = new List<GameObject>();
+            soundEffects = new List<SoundEffect>();
 
             //Resolution
             Window.Position = new Point(0, 0);
@@ -120,43 +131,43 @@ namespace EnterTheColiseum
             gameObjects.Add(baseMap);
 
             GameObject tavern = new GameObject(new Vector2(850, 490));
-            tavern.AddComponent(new SpriteRenderer(tavern, "Tavern", 0.5f, 0.25f));
-            tavern.AddComponent(new Collider(tavern, false, false));
+            tavern.AddComponent(new SpriteRenderer(tavern, "Tavern", 0.9f, 0.25f));
+            tavern.AddComponent(new Collider(tavern, false, true));
             tavern.AddComponent(new Button(tavern, ButtonType.Tavern));
             tavern.AddComponent(new Tavern(tavern, (Button)tavern.GetComponent("Button")));
             gameObjects.Add(tavern);
 
             GameObject colosseum = new GameObject(new Vector2(555, 115));
-            colosseum.AddComponent(new SpriteRenderer(colosseum, "EtC arena v1", 0.5f, 0.8f));
-            colosseum.AddComponent(new Collider(colosseum, false, false));
+            colosseum.AddComponent(new SpriteRenderer(colosseum, "EtC arena v1", 0.9f, 0.8f));
+            colosseum.AddComponent(new Collider(colosseum, false, true));
             colosseum.AddComponent(new Button(colosseum, ButtonType.Colosseum));
             colosseum.AddComponent(new Colosseum(colosseum, (Button)colosseum.GetComponent("Button")));
             gameObjects.Add(colosseum);
 
             GameObject market = new GameObject(new Vector2(95, 160));
-            market.AddComponent(new SpriteRenderer(market, "Market", 0.5f, 1f));
-            market.AddComponent(new Collider(market, false, false));
+            market.AddComponent(new SpriteRenderer(market, "Market", 0.9f, 1f));
+            market.AddComponent(new Collider(market, false, true));
             market.AddComponent(new Button(market, ButtonType.Market));
             market.AddComponent(new Market(market, (Button)market.GetComponent("Button")));
             gameObjects.Add(market);
 
             GameObject options = new GameObject(new Vector2(20, 20));
-            options.AddComponent(new SpriteRenderer(options, "options icon", 0.5f, 1f));
-            options.AddComponent(new Collider(options, false, false));
+            options.AddComponent(new SpriteRenderer(options, "options icon", 0.9f, 1f));
+            options.AddComponent(new Collider(options, false, true));
             options.AddComponent(new Button(options, ButtonType.Options));
             options.AddComponent(new Options(options, (Button)options.GetComponent("Button")));
             gameObjects.Add(options);
 
             GameObject barracks = new GameObject(new Vector2(80, 490));
-            barracks.AddComponent(new SpriteRenderer(barracks, "Barrak", 0.5f, 0.3f));
-            barracks.AddComponent(new Collider(barracks, false, false));
+            barracks.AddComponent(new SpriteRenderer(barracks, "Barrak", 0.9f, 0.3f));
+            barracks.AddComponent(new Collider(barracks, false, true));
             barracks.AddComponent(new Button(barracks, ButtonType.Barracks));
             barracks.AddComponent(new Barracks(barracks, (Button)barracks.GetComponent("Button")));
             gameObjects.Add(barracks);
 
             GameObject upgrade = new GameObject(new Vector2(880, 40));
-            upgrade.AddComponent(new SpriteRenderer(upgrade, "kran", 0.5f, 0.8f));
-            upgrade.AddComponent(new Collider(upgrade, false, false));
+            upgrade.AddComponent(new SpriteRenderer(upgrade, "kran", 0.9f, 0.8f));
+            upgrade.AddComponent(new Collider(upgrade, false, true));
             upgrade.AddComponent(new Button(upgrade, ButtonType.Upgrade));
             upgrade.AddComponent(new Upgrade(upgrade, (Button)upgrade.GetComponent("Button")));
             gameObjects.Add(upgrade);
@@ -174,11 +185,15 @@ namespace EnterTheColiseum
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-
             foreach (GameObject obj in gameObjects)
             {
                 obj.LoadContent(Content);
             }
+            SoundEffects.Add(Content.Load<SoundEffect>("2642__ceacy__sword"));
+            SoundEffects.Add(Content.Load<SoundEffect>("77611__joelaudio__sfx-attack-sword-001"));
+            song = Content.Load<Song>("bensound-epic");
+            MediaPlayer.Play(song);
+            MediaPlayer.IsRepeating = true;
         }
 
         /// <summary>
@@ -202,22 +217,10 @@ namespace EnterTheColiseum
                 this.Exit();
             }
 
-            // TODO: Add your update logic here
-            /*if (inFight)
+            foreach (GameObject obj in gameObjects)
             {
-                foreach (GameObject obj in fightList)
-                {
-                    obj.Update();
-                }
+                obj.Update();
             }
-            else
-            {*/
-                foreach (GameObject obj in gameObjects)
-                {
-                    obj.Update();
-                }
-            //}
-
 
             if (newObjects.Count > 0)
             {
@@ -252,21 +255,11 @@ namespace EnterTheColiseum
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, Resolution.ScaleMatrix);
 
-            /*if (inFight)
+            foreach (GameObject obj in gameObjects)
             {
-                foreach (GameObject obj in fightList)
-                {
-                    obj.Draw(spriteBatch);
-                }
+                obj.Draw(spriteBatch);
             }
-            else
-            {*/
-                foreach (GameObject obj in gameObjects)
-                {
-                    obj.Draw(spriteBatch);
-                }
-            //}
-
+            
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -282,10 +275,6 @@ namespace EnterTheColiseum
         public void RemoveGameObject(GameObject gameObject)
         {
             objectsToRemove.Add(gameObject);
-        }
-        public void AddToFightList(GameObject gameObject)
-        {
-            fightList.Add(gameObject);
         }
         public void ExitGame()
         {

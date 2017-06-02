@@ -44,7 +44,7 @@ namespace EnterTheColiseum
         }
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            spriteBatch.Draw(sprite, position, rectangle, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0.2f);
+            spriteBatch.Draw(sprite, position, rectangle, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0.7f);
         }
         private void Clicked()
         {

@@ -61,7 +61,7 @@ namespace UnitTest
             gameObject.AddComponent(spriteRenderer);
             Animator animator = new Animator(gameObject);
             gameObject.AddComponent(animator);
-            Gladiator gladiator = new Gladiator(gameObject, "Scipio");
+            Gladiator gladiator = new Gladiator(gameObject, "Scipio", false, null);
             gameObject.AddComponent(gameObject);
 
             //Act

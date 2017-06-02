@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    class Idle : IStrategy
+    class Die : IStrategy
     {
         //Fields
+
+        //Component Fields
         Animator animator;
 
+        //Properties
+
         //Constructor
-        public Idle(Animator animator)
+        public Die(Animator animator)
         {
             this.animator = animator;
         }
@@ -20,7 +24,7 @@ namespace EnterTheColiseum
         //Methods
         public void Execute(ref Direction direction)
         {
-            animator.PlayAnimation("Idle");
+            animator.PlayAnimation("Die");
         }
     }
 }
