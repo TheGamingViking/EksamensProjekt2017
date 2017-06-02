@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace EnterTheColiseum
 {
-    public class UI : Component, IUpdateable
+   public class UI : Component, IUpdateable
     {
         //Fields
         protected MouseState mouseState;

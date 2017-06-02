@@ -20,6 +20,7 @@ namespace EnterTheColiseum
 
         //Component Fields
         Button returnButton;
+        Button exitButton;
 
         //Properties
 
@@ -30,6 +31,7 @@ namespace EnterTheColiseum
 
             GameObject.Transform.Position = new Vector2(61, 20);
             this.returnButton = returnButton;
+            
             LoadContent(GameWorld.Instance.Content);
         }
 

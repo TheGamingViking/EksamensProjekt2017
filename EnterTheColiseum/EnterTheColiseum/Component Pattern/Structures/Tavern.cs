@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework;
 
 namespace EnterTheColiseum
 {
-    class Tavern : Component, ILoadable, ISaveable
+    public class Tavern : Component, ILoadable, ISaveable
     {
-        //Fields
+        //Field
         
         //Component Fields
         Button button;
@@ -27,6 +27,7 @@ namespace EnterTheColiseum
         public void LoadContent(ContentManager content)
         {
             button.TavernClicked += Clicked;
+            
             //Load from database
         }
         private void Clicked()
@@ -40,14 +41,30 @@ namespace EnterTheColiseum
             GameObject menu = new GameObject(Vector2.Zero);
             menu.AddComponent(new Menu(menu, (Button)returnButton.GetComponent("Button")));
 
+            GameObject exitButton = new GameObject(new Vector2(500, 500));
+            exitButton.AddComponent(new SpriteRenderer(exitButton, "Exitknap", 0.05f, 1));
+            exitButton.AddComponent(new Collider(exitButton, false, false));
+            exitButton.AddComponent(new Button(exitButton, ButtonType.Exit));
+            (exitButton.GetComponent("Button") as Button).TavernClicked += QuitGame;
+            (exitButton.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
+            (exitButton.GetComponent("Collider") as Collider).LoadContent(GameWorld.Instance.Content);
+
             GameWorld.Instance.AddGameObject(menu);
             GameWorld.Instance.AddGameObject(returnButton);
+            GameWorld.Instance.AddGameObject(exitButton);
             (menu.GetComponent("Menu") as Menu).AddUIElement(menu);
             (menu.GetComponent("Menu") as Menu).AddUIElement(returnButton);
+            (menu.GetComponent("Menu") as Menu).AddUIElement(exitButton);
         }
         public void Save()
         {
             //Save to database
         }
+
+        public void QuitGame()
+        {
+            GameWorld.Instance.Exit();
+        }
+
     }
 }

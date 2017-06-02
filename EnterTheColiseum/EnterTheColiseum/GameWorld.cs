@@ -28,6 +28,7 @@ namespace EnterTheColiseum
         Random rnd;
         bool inMenu = false;
         bool inFight = false;
+        bool exitClicked = false;
         public delegate void ResolutionEventHandler();
         //Sound
         SoundEffect effect;
@@ -72,6 +73,11 @@ namespace EnterTheColiseum
         {
             get { return inFight; }
             set { inFight = value; }
+        }
+        public bool ExitClicked
+        {
+            get { return exitClicked; }
+            set { exitClicked = true; }
         }
         public List<GameObject> GameObjects
         {
@@ -208,7 +214,7 @@ namespace EnterTheColiseum
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                Exit();
+                this.Exit();
             }
 
             foreach (GameObject obj in gameObjects)
@@ -270,8 +276,12 @@ namespace EnterTheColiseum
         {
             objectsToRemove.Add(gameObject);
         }
-
+        public void ExitGame()
+        {
+            this.Exit();
+        }
         //Events
         public event ResolutionEventHandler ResolutionChangedEvent;
+
     }
 }
