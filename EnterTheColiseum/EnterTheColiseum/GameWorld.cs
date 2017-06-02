@@ -111,10 +111,10 @@ namespace EnterTheColiseum
             soundEffects = new List<SoundEffect>();
 
             //Resolution
-            Window.Position = new Point(0, 0);
+            Window.Position = new Point((int)Resolution.ScreenDimensions.X/2-640, (int)Resolution.ScreenDimensions.Y / 2-360);
             Window.IsBorderless = true;
-            graphics.PreferredBackBufferWidth = (int)Resolution.ScreenDimensions.X;
-            graphics.PreferredBackBufferHeight = (int)Resolution.ScreenDimensions.Y;
+            graphics.PreferredBackBufferWidth = 1280/*(int)Resolution.ScreenDimensions.X*/;
+            graphics.PreferredBackBufferHeight = 720/*(int)Resolution.ScreenDimensions.Y*/;
             graphics.ApplyChanges();
             ResolutionChangedEvent();
 
