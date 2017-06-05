@@ -297,7 +297,6 @@ namespace EnterTheColiseum
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, Resolution.ScaleMatrix);
 
-            spriteBatch.DrawString(fonts, "INSERT TEXT HERE", (new Vector2(120, 120)), Color.Red);
             foreach (GameObject obj in gameObjects)
             {
                 obj.Draw(spriteBatch);

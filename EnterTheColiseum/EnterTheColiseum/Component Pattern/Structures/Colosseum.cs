@@ -12,6 +12,7 @@ namespace EnterTheColiseum
     public class Colosseum : Component, ILoadable, ISaveable, IDrawable
     {
         //Fields
+        GameObject arena;
         Rectangle arenaBounds;
         Texture2D arenaBoundsTexture;
         SpriteFont fonts;
@@ -83,7 +84,7 @@ namespace EnterTheColiseum
                 }
             }
 
-            GameObject arena = new GameObject(Vector2.Zero);
+            arena = new GameObject(Vector2.Zero);
             arena.AddComponent(new SpriteRenderer(arena, "EtC arena", 0.5f, 1));
             (arena.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
 
@@ -120,9 +121,14 @@ namespace EnterTheColiseum
             if (GameWorld.Instance.InFight)
             {
                 spriteBatch.Draw(arenaBoundsTexture, arenaBounds, null, Color.Transparent, 0, Vector2.Zero, SpriteEffects.None, 0.45f);
-                spriteBatch.DrawString(fonts, $"Health: {gladiatorsInFight[0].Health}", new Vector2(10, 10), Color.White);
-                spriteBatch.DrawString(fonts, $"Health: {gladiatorsInFight[1].Health}", new Vector2(10, 30), Color.White);
+                spriteBatch.DrawString(fonts, $"{gladiatorsInFight[0].Name}: {gladiatorsInFight[0].Health}", new Vector2(15, 10), Color.White);
+                spriteBatch.DrawString(fonts, $"{gladiatorsInFight[1].Name}: {gladiatorsInFight[1].Health}", new Vector2(15, 40), Color.White);
             }
+        }
+        public void ResetArena()
+        {
+            gladiatorsInFight.Clear();
+            GameWorld.Instance.RemoveGameObject(arena);
         }
     }
 }

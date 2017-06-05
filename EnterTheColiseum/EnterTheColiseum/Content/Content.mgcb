@@ -25,7 +25,7 @@
 /processorParam:TextureFormat=Color
 /build:EtC arena v1.png
 
-#begin EtC arena v1.png
+#begin ArenaLvL3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -278,3 +278,14 @@
 /processorParam:TextureFormat=Color
 /build:selbtn.png
 
+#begin Save&Exit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Save&Exit.png

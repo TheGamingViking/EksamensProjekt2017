@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Content;
 
 namespace EnterTheColiseum
 {
@@ -28,17 +29,24 @@ namespace EnterTheColiseum
         public void Execute(ref Direction direction)
         {
             animator.PlayAnimation("Attack");
-            if (!gladiator.SoundIsPlaying)
+            try
             {
-                if (gladiator.Rnd.Next(1, 3) == 1)
+                if (!gladiator.SoundIsPlaying)
                 {
-                    GameWorld.Instance.SoundEffects[0].Play();
+                    if (gladiator.Rnd.Next(1, 3) == 1)
+                    {
+                        GameWorld.Instance.SoundEffects[0].Play();
+                    }
+                    else
+                    {
+                        GameWorld.Instance.SoundEffects[1].Play();
+                    }
+                    gladiator.SoundIsPlaying = true;
                 }
-                else
-                {
-                    GameWorld.Instance.SoundEffects[1].Play();
-                }
-                gladiator.SoundIsPlaying = true;
+            }
+            catch (ContentLoadException)
+            {
+                Console.WriteLine("Sound content load failed. ContentLoadException handled.");
             }
         }
     }

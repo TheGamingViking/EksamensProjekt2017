@@ -82,6 +82,7 @@ namespace EnterTheColiseum
         }
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
+#if DEBUG
             Rectangle topLine = new Rectangle(CollisionBox.X, CollisionBox.Y, CollisionBox.Width, 1);
             Rectangle bottomLine = new Rectangle(CollisionBox.X, CollisionBox.Y + CollisionBox.Height, CollisionBox.Width, 1);
             Rectangle rightLine = new Rectangle(CollisionBox.X + CollisionBox.Width, CollisionBox.Y, 1, CollisionBox.Height);
@@ -91,6 +92,7 @@ namespace EnterTheColiseum
             spriteBatch.Draw(colliderTexture, bottomLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
             spriteBatch.Draw(colliderTexture, rightLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
             spriteBatch.Draw(colliderTexture, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+#endif
         }
         public void Update()
         {

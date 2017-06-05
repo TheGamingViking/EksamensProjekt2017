@@ -23,7 +23,7 @@ namespace EnterTheColiseum
         float attack;
         float defense;
         float health = 10;
-        float speed = 2;
+        float speed = 5;
         List<string> equipmentReferences;
         List<Gear> equipment;
         //List<GameObject> enemyList;
@@ -96,7 +96,6 @@ namespace EnterTheColiseum
             equipment = new List<Gear>();
             //enemyList = new List<GameObject>();
             rnd = new Random();
-            health = 100;
 
             this.fight = fight;
             this.name = name;
@@ -204,7 +203,7 @@ namespace EnterTheColiseum
                 attack += gear.Attack;
             }*/
             //Set agility as base defense value
-            defense = agility;
+            defense = (agility * 0.5f);
             //Add gear defense values to gladiator defense
             /*foreach (Gear gear in equipment)
             {
@@ -227,6 +226,12 @@ namespace EnterTheColiseum
                 if (enemy.Health <= 0)
                 {
                     fight = false;
+                    Thread.Sleep(3000);
+                    arena.ResetArena();
+                    GameWorld.Instance.RemoveGameObject(enemy.GameObject);
+                    GameWorld.Instance.RemoveGameObject(this.GameObject);
+                    GameWorld.Instance.InFight = false;
+                    thread.Abort();
                 }
                 if (canMove)
                 {
@@ -282,6 +287,7 @@ namespace EnterTheColiseum
             if (animationName.Contains("Die"))
             {
                 fight = false;
+                thread.Abort();
             }
             if (animationName.Contains("Attack"))
             {
