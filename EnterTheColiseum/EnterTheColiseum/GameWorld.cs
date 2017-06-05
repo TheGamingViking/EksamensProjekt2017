@@ -18,6 +18,7 @@ namespace EnterTheColiseum
         //Fields
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont fonts;
         static GameWorld instance;
         List<GameObject> gameObjects;
         List<Collider> colliders;
@@ -223,6 +224,7 @@ namespace EnterTheColiseum
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            fonts = Content.Load<SpriteFont>("Fonts");
 
             // TODO: use this.Content to load your game content here
             foreach (GameObject obj in gameObjects)
@@ -295,6 +297,7 @@ namespace EnterTheColiseum
             // TODO: Add your drawing code here
             spriteBatch.Begin(SpriteSortMode.BackToFront, null, null, null, null, null, Resolution.ScaleMatrix);
 
+            spriteBatch.DrawString(fonts, "INSERT TEXT HERE", (new Vector2(120, 120)), Color.Red);
             foreach (GameObject obj in gameObjects)
             {
                 obj.Draw(spriteBatch);
