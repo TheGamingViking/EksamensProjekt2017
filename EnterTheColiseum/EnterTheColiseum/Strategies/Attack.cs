@@ -44,7 +44,7 @@ namespace EnterTheColiseum
                     gladiator.SoundIsPlaying = true;
                 }
             }
-            catch (ContentLoadException)
+            catch (NullReferenceException)
             {
                 Console.WriteLine("Sound content load failed. ContentLoadException handled.");
             }
