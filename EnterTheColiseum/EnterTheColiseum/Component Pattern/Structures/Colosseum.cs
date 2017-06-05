@@ -113,7 +113,7 @@ namespace EnterTheColiseum
         {
             if (GameWorld.Instance.InFight)
             {
-                spriteBatch.Draw(arenaBoundsTexture, arenaBounds, null, Color.Transparent, 0, Vector2.Zero, SpriteEffects.None, 0.45f);
+                spriteBatch.Draw(arenaBoundsTexture, arenaBounds, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 0.45f);
             }
         }
     }

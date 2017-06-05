@@ -76,6 +76,7 @@
     <Compile Include="Strategies\Die.cs" />
     <Compile Include="Strategies\GoTo.cs" />
     <Compile Include="Strategies\Idle.cs" />
+    <Compile Include="Strategies\TakeDamage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
