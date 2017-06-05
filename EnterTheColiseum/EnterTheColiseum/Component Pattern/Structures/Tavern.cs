@@ -41,8 +41,8 @@ namespace EnterTheColiseum
             GameObject menu = new GameObject(Vector2.Zero);
             menu.AddComponent(new Menu(menu, (Button)returnButton.GetComponent("Button")));
 
-            GameObject exitButton = new GameObject(new Vector2(500, 500));
-            exitButton.AddComponent(new SpriteRenderer(exitButton, "Exitknap", 0.06f, 1));
+            GameObject exitButton = new GameObject(new Vector2(532, 276));
+            exitButton.AddComponent(new SpriteRenderer(exitButton, "Save&Exit", 0.06f, 1f));
             exitButton.AddComponent(new Collider(exitButton, false, false));
             exitButton.AddComponent(new Button(exitButton, ButtonType.Exit));
             (exitButton.GetComponent("Button") as Button).ExitClicked += QuitGame;
@@ -62,6 +62,7 @@ namespace EnterTheColiseum
         }
         public void QuitGame()
         {
+            GameWorld.Instance.Connection.Close();
             GameWorld.Instance.Exit();
         }
     }

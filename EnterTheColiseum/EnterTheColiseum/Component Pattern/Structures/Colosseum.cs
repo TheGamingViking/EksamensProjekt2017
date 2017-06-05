@@ -14,6 +14,8 @@ namespace EnterTheColiseum
         //Fields
         Rectangle arenaBounds;
         Texture2D arenaBoundsTexture;
+        SpriteFont fonts;
+        List<Gladiator> gladiatorsInFight;
 
         //Component Fields
         Button button;
@@ -28,6 +30,7 @@ namespace EnterTheColiseum
         public Colosseum(GameObject gameObject, Button button) : base(gameObject)
         {
             arenaBounds = new Rectangle(220, 235, 860, 480);
+            gladiatorsInFight = new List<Gladiator>();
             this.button = button;
         }
 
@@ -36,6 +39,7 @@ namespace EnterTheColiseum
         {
             button.ColosseumClicked += Clicked;
             arenaBoundsTexture = content.Load<Texture2D>("CollisionTexture");
+            fonts = content.Load<SpriteFont>("Fonts");
             //Load from database
         }
         private void Clicked()
@@ -87,19 +91,21 @@ namespace EnterTheColiseum
             gladiator.AddComponent(new SpriteRenderer(gladiator, "EtC placeholder animation 2", 0.4f, 0.15f));
             gladiator.AddComponent(new Animator(gladiator));
             gladiator.AddComponent(new Collider(gladiator, false, false));
-            gladiator.AddComponent(new Gladiator(gladiator, "KappaPride", true, this));
+            gladiator.AddComponent(new Gladiator(gladiator, "Ains Ooal Gown", true, this));
             (gladiator.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
             (gladiator.GetComponent("Gladiator") as Gladiator).LoadContent(GameWorld.Instance.Content);
             (gladiator.GetComponent("Collider") as Collider).LoadContent(GameWorld.Instance.Content);
+            gladiatorsInFight.Add((Gladiator)gladiator.GetComponent("Gladiator"));
 
             GameObject gladiator2 = new GameObject(new Vector2(950, 550));
             gladiator2.AddComponent(new SpriteRenderer(gladiator2, "EtC Animation v2", 0.4f, 0.15f));
             gladiator2.AddComponent(new Animator(gladiator2));
             gladiator2.AddComponent(new Collider(gladiator2, false, false));
-            gladiator2.AddComponent(new Gladiator(gladiator2, "KappaPrude", true, this));
+            gladiator2.AddComponent(new Gladiator(gladiator2, "Kappa Pride", true, this));
             (gladiator2.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
             (gladiator2.GetComponent("Gladiator") as Gladiator).LoadContent(GameWorld.Instance.Content);
             (gladiator2.GetComponent("Collider") as Collider).LoadContent(GameWorld.Instance.Content);
+            gladiatorsInFight.Add((Gladiator)gladiator2.GetComponent("Gladiator"));
 
             GameWorld.Instance.AddGameObject(arena);
             GameWorld.Instance.AddGameObject(gladiator);
@@ -113,7 +119,9 @@ namespace EnterTheColiseum
         {
             if (GameWorld.Instance.InFight)
             {
-                spriteBatch.Draw(arenaBoundsTexture, arenaBounds, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 0.45f);
+                spriteBatch.Draw(arenaBoundsTexture, arenaBounds, null, Color.Transparent, 0, Vector2.Zero, SpriteEffects.None, 0.45f);
+                spriteBatch.DrawString(fonts, $"Health: {gladiatorsInFight[0].Health}", new Vector2(10, 10), Color.White);
+                spriteBatch.DrawString(fonts, $"Health: {gladiatorsInFight[1].Health}", new Vector2(10, 30), Color.White);
             }
         }
     }

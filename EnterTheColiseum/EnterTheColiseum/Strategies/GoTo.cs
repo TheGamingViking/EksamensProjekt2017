@@ -11,6 +11,7 @@ namespace EnterTheColiseum
     {
         //Fields
         Vector2 goal;
+        float speed;
 
         //Component Fields
         Transform transform;
@@ -20,12 +21,13 @@ namespace EnterTheColiseum
         //Properties
 
         //Constructor
-        public GoTo(Transform transform, Animator animator, Vector2 goal, Colosseum arena)
+        public GoTo(Transform transform, Animator animator, Vector2 goal, Colosseum arena, float speed)
         {
             this.transform = transform;
             this.animator = animator;
             this.goal = goal;
             this.arena = arena;
+            this.speed = speed;
         }
 
         //Methods
@@ -65,7 +67,7 @@ namespace EnterTheColiseum
                     translation = Vector2.Negate(inversion);
                 }
 
-                transform.Translate(translation * 40 * GameWorld.Instance.DeltaTime);
+                transform.Translate(translation * speed * GameWorld.Instance.DeltaTime);
                 animator.PlayAnimation("Walk");
             }
         }

@@ -20,7 +20,6 @@ namespace EnterTheColiseum
 
         //Component Fields
         Button returnButton;
-        Button exitButton;
 
         //Properties
 

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
-//using System.Data.SQLite;
+using System.Data.SQLite;
 
 namespace EnterTheColiseum
 {
@@ -25,14 +25,18 @@ namespace EnterTheColiseum
         List<GameObject> objectsToRemove;
         MouseState mouseState;
         float deltaTime;
-        Random rnd;
         bool inMenu = false;
         bool inFight = false;
         public delegate void ResolutionEventHandler();
         //Sound
         List<SoundEffect> soundEffects;
         Song song;
-
+        //Database Fields
+        string database = "EnterTheColiseum";
+        string command;
+        SQLiteCommand commander;
+        SQLiteDataReader reader;
+        SQLiteConnection connection;
 
         //Properties
         static public GameWorld Instance
@@ -76,10 +80,28 @@ namespace EnterTheColiseum
         {
             get { return gameObjects; }
         }
-
         public List<SoundEffect> SoundEffects
         {
             get { return soundEffects; }
+        }
+        public string Command
+        {
+            get { return command; }
+            set { command = value; }
+        }
+        public SQLiteCommand Commander
+        {
+            get { return commander; }
+            set { commander = value; }
+        }
+        public SQLiteDataReader Reader
+        {
+            get { return reader; }
+            set { reader = value; }
+        }
+        public SQLiteConnection Connection
+        {
+            get { return connection; }
         }
 
         //Constructor
@@ -103,6 +125,31 @@ namespace EnterTheColiseum
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            //Database creation
+            SQLiteConnection.CreateFile(database + ".db");
+            connection = new SQLiteConnection($"Data Source = {database}.db;Version = 3");
+            connection.Open();
+            try
+            {
+                command = "create table Gladiators(name text primary key, strength float, agility float, strategy float, helmet text, armour text, weapon text);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "create table Equipment(name text primary key, attack float, defense float, type text, cost float);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "insert into Gladiators values('Ains Ooal Gown', 10, 10, 10, null, null, null);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                command = "insert into Gladiators values('Kappa Pride', 7, 5, 2, null, null, null);";
+                commander = new SQLiteCommand(command, connection);
+                commander.ExecuteNonQuery();
+                //Insert all equipment in the game into table Equipment
+            }
+            catch (SQLiteException)
+            {
+                Console.WriteLine("SQLiteException: Table exists. Handled.");
+            }
+
             //List instantiation
             gameObjects = new List<GameObject>();
             colliders = new List<Collider>();

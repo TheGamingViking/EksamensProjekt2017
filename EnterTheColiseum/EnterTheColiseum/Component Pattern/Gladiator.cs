@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EnterTheColiseum
 {
-    public class Gladiator : Component, IUpdateable, ILoadable, ICollisionEnter, ICollisionExit, ICollisionStay, IAnimateable
+    public class Gladiator : Component, ILoadable, ICollisionEnter, ICollisionExit, ICollisionStay, IAnimateable
     {
         //Fields
         string name;
@@ -22,7 +22,9 @@ namespace EnterTheColiseum
         float strategy;
         float attack;
         float defense;
-        float health;
+        float health = 10;
+        float speed = 2;
+        List<string> equipmentReferences;
         List<Gear> equipment;
         //List<GameObject> enemyList;
         protected IStrategy combatStrategy;
@@ -90,6 +92,7 @@ namespace EnterTheColiseum
         public Gladiator(GameObject gameObject, string name, bool fight, Colosseum arena) : base(gameObject)
         {
             animator = (Animator)GameObject.GetComponent("Animator");
+            equipmentReferences = new List<string>();
             equipment = new List<Gear>();
             //enemyList = new List<GameObject>();
             rnd = new Random();
@@ -107,16 +110,43 @@ namespace EnterTheColiseum
         {
             CreateAnimations();
             //Get fields from database
-        }
-        public void Update()
-        {
-
+            GameWorld.Instance.Command = $"select * from Gladiators where name is '{name}';";
+            GameWorld.Instance.Commander = new System.Data.SQLite.SQLiteCommand
+                (GameWorld.Instance.Command, GameWorld.Instance.Connection);
+            GameWorld.Instance.Reader = GameWorld.Instance.Commander.ExecuteReader();
+            while (GameWorld.Instance.Reader.Read())
+            {
+                strength = (float)Convert.ToDouble(GameWorld.Instance.Reader[1]);
+                agility = (float)Convert.ToDouble(GameWorld.Instance.Reader[2]);
+                strategy = (float)Convert.ToDouble(GameWorld.Instance.Reader[3]);
+                for (int i = 4; i < 7; i++)
+                {
+                    object temp = GameWorld.Instance.Reader[i];
+                    if (!(GameWorld.Instance.Reader[i].GetType().Name == "DBNull"))
+                    {
+                        equipmentReferences.Add((string)temp);
+                    }
+                }
+            }
+            foreach (string equipmentRef in equipmentReferences)
+            {
+                GameWorld.Instance.Command = $"select * from Equipment where name is '{equipmentRef}';";
+                GameWorld.Instance.Commander = new System.Data.SQLite.SQLiteCommand
+                    (GameWorld.Instance.Command, GameWorld.Instance.Connection);
+                GameWorld.Instance.Reader = GameWorld.Instance.Commander.ExecuteReader();
+                while (GameWorld.Instance.Reader.Read())
+                {
+                    //Instantiate equipment with data from its row in database
+                    Equip(new Gear());
+                }
+            }
+            CalculateStatstics();
         }
         public void Equip(Gear item)
         {
             equipment.Add(item);
         }
-        public void TakeDamage(int damage, Gladiator attacker)
+        public void TakeDamage(float damage, Gladiator attacker)
         {
             /*lock (this)
             {
@@ -153,6 +183,11 @@ namespace EnterTheColiseum
                     }
 
                     GameObject.Transform.Translate(modifiedPosition);
+                    damage -= defense;
+                    if (damage < 0)
+                    {
+                        damage = 0;
+                    }
                     health -= damage;
                     Console.WriteLine($"{name}, {health}");
                     //combatStrategy = new TakeDamage(animator);
@@ -161,7 +196,24 @@ namespace EnterTheColiseum
         }
         private void CalculateStatstics()
         {
-
+            //Set strength as base attack value
+            attack = strength;
+            //Add gear attack values to gladiator attack
+            /*foreach (Gear gear in equipment)
+            {
+                attack += gear.Attack;
+            }*/
+            //Set agility as base defense value
+            defense = agility;
+            //Add gear defense values to gladiator defense
+            /*foreach (Gear gear in equipment)
+            {
+                defense += gear.Defense;
+            }*/
+            //Multiply strength with base health to set total health
+            health *= strength;
+            //Multiply agility with base speed to set total speed
+            speed *= agility;
         }
         public void AI()
         {
@@ -181,14 +233,13 @@ namespace EnterTheColiseum
                     if (enemy.GameObject.Transform.Position.X != GameObject.Transform.Position.X ||
                         enemy.GameObject.Transform.Position.Y != GameObject.Transform.Position.Y)
                     {
-                        combatStrategy = new GoTo(GameObject.Transform, animator, enemy.GameObject.Transform.Position, arena);
+                        combatStrategy = new GoTo(GameObject.Transform, animator, enemy.GameObject.Transform.Position, arena, speed);
                     }
                     else
                     {
                         combatStrategy = new Idle(animator);
                     }
                 }
-                
                 combatStrategy.Execute(ref currentDirection);
                 Thread.Sleep(Convert.ToInt32((1 - GameWorld.Instance.DeltaTime) * 10));
             }
@@ -223,7 +274,7 @@ namespace EnterTheColiseum
         {
             if (combatStrategy is Attack)
             {
-                (other.GameObject.GetComponent("Gladiator") as Gladiator).TakeDamage(20, this);
+                (other.GameObject.GetComponent("Gladiator") as Gladiator).TakeDamage(attack, this);
             }
         }
         public void OnAnimationDone(string animationName)
