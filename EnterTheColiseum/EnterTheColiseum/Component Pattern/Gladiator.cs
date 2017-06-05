@@ -279,7 +279,14 @@ namespace EnterTheColiseum
         {
             if (combatStrategy is Attack)
             {
-                (other.GameObject.GetComponent("Gladiator") as Gladiator).TakeDamage(attack, this);
+                try
+                {
+                    (other.GameObject.GetComponent("Gladiator") as Gladiator).TakeDamage(attack, this);
+                }
+                catch (NullReferenceException)
+                {
+                    //Console.WriteLine("NullReferenceException handled. Gladiator.cs line 284.");
+                }
             }
         }
         public void OnAnimationDone(string animationName)
