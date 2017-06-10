@@ -11,6 +11,7 @@ namespace EnterTheColiseum
     class Market : Component, ILoadable, ISaveable
     {
         //Fields
+        List<Gladiator> slavesToBuy;
 
         //Component Fields
         Button button;
@@ -20,6 +21,8 @@ namespace EnterTheColiseum
         //Constructor
         public Market(GameObject gameObject, Button button) : base(gameObject)
         {
+            slavesToBuy = new List<Gladiator>();
+
             this.button = button;
         }
 
@@ -27,7 +30,12 @@ namespace EnterTheColiseum
         public void LoadContent(ContentManager content)
         {
             button.MarketClicked += Clicked;
-            //Load from database
+            //Generate slaves
+            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 5, 7, 10));
+            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 8, 3, 6));
+            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 9, 1, 10));
+            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 5, 10, 3));
+            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 6, 6, 6));
         }
         private void Clicked()
         {

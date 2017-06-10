@@ -89,6 +89,7 @@ namespace EnterTheColiseum
         }
 
         //Constructor
+        //Constructor for combat ready gladiator
         public Gladiator(GameObject gameObject, string name, bool fight, Colosseum arena) : base(gameObject)
         {
             animator = (Animator)GameObject.GetComponent("Animator");
@@ -103,37 +104,49 @@ namespace EnterTheColiseum
 
             thread = new Thread(AI);
         }
+        //Constructor for mock gladiators for display
+        public Gladiator(GameObject gameObject, string name, float strength, float agility, float strategy) : base(gameObject)
+        {
+            this.name = name;
+            this.strength = strength;
+            this.agility = agility;
+            this.strategy = strategy;
+        }
 
         //Methods
         public void LoadContent(ContentManager content)
         {
             CreateAnimations();
             //Get fields from database
-            GameWorld.Instance.Command = $"select * from Gladiators where name is '{name}';";
-            GameWorld.Instance.Commander = new System.Data.SQLite.SQLiteCommand
-                (GameWorld.Instance.Command, GameWorld.Instance.Connection);
-            GameWorld.Instance.Reader = GameWorld.Instance.Commander.ExecuteReader();
-            while (GameWorld.Instance.Reader.Read())
+            if (name != "Hans Gruber")
             {
-                strength = (float)Convert.ToDouble(GameWorld.Instance.Reader[1]);
-                agility = (float)Convert.ToDouble(GameWorld.Instance.Reader[2]);
-                strategy = (float)Convert.ToDouble(GameWorld.Instance.Reader[3]);
-                for (int i = 4; i < 7; i++)
+                while (Database.Read("gladiators", "name", $"'{name}'").Read())
+                /*GameWorld.Instance.Command = $"select * from Gladiators where name is '{name}';";
+                GameWorld.Instance.Commander = new System.Data.SQLite.SQLiteCommand
+                (GameWorld.Instance.Command, GameWorld.Instance.Connection);
+                GameWorld.Instance.Reader = GameWorld.Instance.Commander.ExecuteReader();
+                while (GameWorld.Instance.Reader.Read())*/
                 {
-                    object temp = GameWorld.Instance.Reader[i];
-                    if (!(GameWorld.Instance.Reader[i].GetType().Name == "DBNull"))
+                    strength = (float)Convert.ToDouble(Database.Reader[1]);
+                    agility = (float)Convert.ToDouble(Database.Reader[2]);
+                    strategy = (float)Convert.ToDouble(Database.Reader[3]);
+                    for (int i = 4; i < 7; i++)
                     {
-                        equipmentReferences.Add((string)temp);
+                        if (!(Database.Reader[i].GetType().Name == "DBNull"))
+                        {
+                            equipmentReferences.Add((string)Database.Reader[i]);
+                        }
                     }
                 }
             }
             foreach (string equipmentRef in equipmentReferences)
             {
-                GameWorld.Instance.Command = $"select * from Equipment where name is '{equipmentRef}';";
+                while (Database.Read("equipment", "name", $"'{equipmentRef}'").Read())
+                /*GameWorld.Instance.Command = $"select * from Equipment where name is '{equipmentRef}';";
                 GameWorld.Instance.Commander = new System.Data.SQLite.SQLiteCommand
                     (GameWorld.Instance.Command, GameWorld.Instance.Connection);
                 GameWorld.Instance.Reader = GameWorld.Instance.Commander.ExecuteReader();
-                while (GameWorld.Instance.Reader.Read())
+                while (GameWorld.Instance.Reader.Read())*/
                 {
                     //Instantiate equipment with data from its row in database
                     Equip(new Gear());

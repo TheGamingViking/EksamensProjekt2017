@@ -33,11 +33,11 @@ namespace EnterTheColiseum
         List<SoundEffect> soundEffects;
         Song song;
         //Database Fields
-        string database = "EnterTheColiseum";
+        /*string database = "EnterTheColiseum";
         string command;
         SQLiteCommand commander;
         SQLiteDataReader reader;
-        SQLiteConnection connection;
+        SQLiteConnection connection;*/
 
         //Properties
         static public GameWorld Instance
@@ -85,7 +85,7 @@ namespace EnterTheColiseum
         {
             get { return soundEffects; }
         }
-        public string Command
+        /*public string Command
         {
             get { return command; }
             set { command = value; }
@@ -103,7 +103,7 @@ namespace EnterTheColiseum
         public SQLiteConnection Connection
         {
             get { return connection; }
-        }
+        }*/
 
         //Constructor
         public GameWorld()
@@ -127,7 +127,7 @@ namespace EnterTheColiseum
         {
             // TODO: Add your initialization logic here
             //Database creation
-            SQLiteConnection.CreateFile(database + ".db");
+            /*SQLiteConnection.CreateFile(database + ".db");
             connection = new SQLiteConnection($"Data Source = {database}.db;Version = 3");
             connection.Open();
             try
@@ -149,7 +149,7 @@ namespace EnterTheColiseum
             catch (SQLiteException)
             {
                 Console.WriteLine("SQLiteException: Table exists. Handled.");
-            }
+            }*/
 
             //List instantiation
             gameObjects = new List<GameObject>();
