@@ -103,6 +103,7 @@ namespace EnterTheColiseum
             this.arena = arena;
 
             thread = new Thread(AI);
+            thread.IsBackground = true;
         }
         //Constructor for mock gladiators for display
         public Gladiator(GameObject gameObject, string name, float strength, float agility, float strategy) : base(gameObject)
@@ -120,12 +121,8 @@ namespace EnterTheColiseum
             //Get fields from database
             if (name != "Hans Gruber")
             {
-                while (Database.Read("gladiators", "name", $"'{name}'").Read())
-                /*GameWorld.Instance.Command = $"select * from Gladiators where name is '{name}';";
-                GameWorld.Instance.Commander = new System.Data.SQLite.SQLiteCommand
-                (GameWorld.Instance.Command, GameWorld.Instance.Connection);
-                GameWorld.Instance.Reader = GameWorld.Instance.Commander.ExecuteReader();
-                while (GameWorld.Instance.Reader.Read())*/
+                Database.Read("gladiators", "name", $"'{name}'");
+                while (Database.Reader.Read())
                 {
                     strength = (float)Convert.ToDouble(Database.Reader[1]);
                     agility = (float)Convert.ToDouble(Database.Reader[2]);
@@ -141,12 +138,8 @@ namespace EnterTheColiseum
             }
             foreach (string equipmentRef in equipmentReferences)
             {
-                while (Database.Read("equipment", "name", $"'{equipmentRef}'").Read())
-                /*GameWorld.Instance.Command = $"select * from Equipment where name is '{equipmentRef}';";
-                GameWorld.Instance.Commander = new System.Data.SQLite.SQLiteCommand
-                    (GameWorld.Instance.Command, GameWorld.Instance.Connection);
-                GameWorld.Instance.Reader = GameWorld.Instance.Commander.ExecuteReader();
-                while (GameWorld.Instance.Reader.Read())*/
+                Database.Read("equipment", "name", $"'{equipmentRef}'");
+                while (Database.Reader.Read())
                 {
                     //Instantiate equipment with data from its row in database
                     Equip(new Gear());
@@ -240,10 +233,8 @@ namespace EnterTheColiseum
                 {
                     fight = false;
                     Thread.Sleep(3000);
+                    GameWorld.Instance.FightEnded(arena.GladiatorsInFight);
                     arena.ResetArena();
-                    GameWorld.Instance.RemoveGameObject(enemy.GameObject);
-                    GameWorld.Instance.RemoveGameObject(this.GameObject);
-                    GameWorld.Instance.InFight = false;
                     thread.Abort();
                 }
                 if (canMove)
@@ -292,13 +283,9 @@ namespace EnterTheColiseum
         {
             if (combatStrategy is Attack)
             {
-                try
+                if (other.GameObject.GetComponent("Gladiator") != null)
                 {
                     (other.GameObject.GetComponent("Gladiator") as Gladiator).TakeDamage(attack, this);
-                }
-                catch (NullReferenceException)
-                {
-                    //Console.WriteLine("NullReferenceException handled. Gladiator.cs line 284.");
                 }
             }
         }

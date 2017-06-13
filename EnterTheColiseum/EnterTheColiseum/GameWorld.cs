@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Threading;
 
 namespace EnterTheColiseum
 {
@@ -21,23 +22,19 @@ namespace EnterTheColiseum
         SpriteFont fonts;
         static GameWorld instance;
         List<GameObject> gameObjects;
+        List<Thread> threadsForGladiators;
         List<Collider> colliders;
         List<GameObject> newObjects;
         List<GameObject> objectsToRemove;
+        List<Gladiator> tempList;
         MouseState mouseState;
         float deltaTime;
         bool inMenu = false;
         bool inFight = false;
-        public delegate void ResolutionEventHandler();
+        public delegate void GenericEventHandler();
         //Sound
         List<SoundEffect> soundEffects;
         Song song;
-        //Database Fields
-        /*string database = "EnterTheColiseum";
-        string command;
-        SQLiteCommand commander;
-        SQLiteDataReader reader;
-        SQLiteConnection connection;*/
 
         //Properties
         static public GameWorld Instance
@@ -85,25 +82,6 @@ namespace EnterTheColiseum
         {
             get { return soundEffects; }
         }
-        /*public string Command
-        {
-            get { return command; }
-            set { command = value; }
-        }
-        public SQLiteCommand Commander
-        {
-            get { return commander; }
-            set { commander = value; }
-        }
-        public SQLiteDataReader Reader
-        {
-            get { return reader; }
-            set { reader = value; }
-        }
-        public SQLiteConnection Connection
-        {
-            get { return connection; }
-        }*/
 
         //Constructor
         public GameWorld()
@@ -127,87 +105,67 @@ namespace EnterTheColiseum
         {
             // TODO: Add your initialization logic here
             //Database creation
-            /*SQLiteConnection.CreateFile(database + ".db");
-            connection = new SQLiteConnection($"Data Source = {database}.db;Version = 3");
-            connection.Open();
-            try
-            {
-                command = "create table Gladiators(name text primary key, strength float, agility float, strategy float, helmet text, armour text, weapon text);";
-                commander = new SQLiteCommand(command, connection);
-                commander.ExecuteNonQuery();
-                command = "create table Equipment(name text primary key, attack float, defense float, type text, cost float);";
-                commander = new SQLiteCommand(command, connection);
-                commander.ExecuteNonQuery();
-                command = "insert into Gladiators values('Ains Ooal Gown', 10, 10, 10, null, null, null);";
-                commander = new SQLiteCommand(command, connection);
-                commander.ExecuteNonQuery();
-                command = "insert into Gladiators values('Kappa Pride', 7, 5, 2, null, null, null);";
-                commander = new SQLiteCommand(command, connection);
-                commander.ExecuteNonQuery();
-                //Insert all equipment in the game into table Equipment
-            }
-            catch (SQLiteException)
-            {
-                Console.WriteLine("SQLiteException: Table exists. Handled.");
-            }*/
+            Database.Setup();
 
             //List instantiation
             gameObjects = new List<GameObject>();
+            threadsForGladiators = new List<Thread>();
             colliders = new List<Collider>();
             newObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
             soundEffects = new List<SoundEffect>();
+            tempList = new List<Gladiator>();
 
             //Resolution
             Window.Position = new Point((int)Resolution.ScreenDimensions.X/2-640, (int)Resolution.ScreenDimensions.Y / 2-360);
             Window.IsBorderless = true;
-            graphics.PreferredBackBufferWidth = 1280/*(int)Resolution.ScreenDimensions.X*/;
-            graphics.PreferredBackBufferHeight = 720/*(int)Resolution.ScreenDimensions.Y*/;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
             graphics.ApplyChanges();
             ResolutionChangedEvent();
 
             //GameObjects
             GameObject baseMap = new GameObject(Vector2.Zero);
-            baseMap.AddComponent(new SpriteRenderer(baseMap, "Nederste lag map 1280x720", 1, 1));
+            baseMap.AddComponent(new SpriteRenderer(baseMap, "Nederste lag map 1280x720", SpriteData.BackgroundDepth, 1));
             gameObjects.Add(baseMap);
 
             GameObject tavern = new GameObject(new Vector2(850, 490));
-            tavern.AddComponent(new SpriteRenderer(tavern, "Tavern", 0.9f, 0.25f));
+            tavern.AddComponent(new SpriteRenderer(tavern, "Tavern", SpriteData.StructureDepth, 0.25f));
             tavern.AddComponent(new Collider(tavern, false, true));
             tavern.AddComponent(new Button(tavern, ButtonType.Tavern));
             tavern.AddComponent(new Tavern(tavern, (Button)tavern.GetComponent("Button")));
             gameObjects.Add(tavern);
 
             GameObject colosseum = new GameObject(new Vector2(555, 115));
-            colosseum.AddComponent(new SpriteRenderer(colosseum, "EtC arena v1", 0.9f, 0.8f));
+            colosseum.AddComponent(new SpriteRenderer(colosseum, "EtC arena v1", SpriteData.StructureDepth, 0.8f));
             colosseum.AddComponent(new Collider(colosseum, false, true));
             colosseum.AddComponent(new Button(colosseum, ButtonType.Colosseum));
             colosseum.AddComponent(new Colosseum(colosseum, (Button)colosseum.GetComponent("Button")));
             gameObjects.Add(colosseum);
 
             GameObject market = new GameObject(new Vector2(95, 160));
-            market.AddComponent(new SpriteRenderer(market, "Market", 0.9f, 1f));
+            market.AddComponent(new SpriteRenderer(market, "Market", SpriteData.StructureDepth, 1f));
             market.AddComponent(new Collider(market, false, true));
             market.AddComponent(new Button(market, ButtonType.Market));
             market.AddComponent(new Market(market, (Button)market.GetComponent("Button")));
             gameObjects.Add(market);
 
             GameObject options = new GameObject(new Vector2(20, 20));
-            options.AddComponent(new SpriteRenderer(options, "options icon", 0.9f, 1f));
+            options.AddComponent(new SpriteRenderer(options, "options icon", SpriteData.StructureDepth, 1f));
             options.AddComponent(new Collider(options, false, true));
             options.AddComponent(new Button(options, ButtonType.Options));
             options.AddComponent(new Options(options, (Button)options.GetComponent("Button")));
             gameObjects.Add(options);
 
             GameObject barracks = new GameObject(new Vector2(80, 490));
-            barracks.AddComponent(new SpriteRenderer(barracks, "Barrak", 0.9f, 0.3f));
+            barracks.AddComponent(new SpriteRenderer(barracks, "Barrak", SpriteData.StructureDepth, 0.3f));
             barracks.AddComponent(new Collider(barracks, false, true));
             barracks.AddComponent(new Button(barracks, ButtonType.Barracks));
             barracks.AddComponent(new Barracks(barracks, (Button)barracks.GetComponent("Button")));
             gameObjects.Add(barracks);
 
             GameObject upgrade = new GameObject(new Vector2(880, 40));
-            upgrade.AddComponent(new SpriteRenderer(upgrade, "kran", 0.9f, 0.8f));
+            upgrade.AddComponent(new SpriteRenderer(upgrade, "kran", SpriteData.StructureDepth, 0.8f));
             upgrade.AddComponent(new Collider(upgrade, false, true));
             upgrade.AddComponent(new Button(upgrade, ButtonType.Upgrade));
             upgrade.AddComponent(new Upgrade(upgrade, (Button)upgrade.GetComponent("Button")));
@@ -263,9 +221,30 @@ namespace EnterTheColiseum
 
             foreach (GameObject obj in gameObjects)
             {
-                obj.Update();
+                if (obj.Tag != "DoNotUpdate")
+                {
+                    obj.Update();
+                }
             }
-
+            for (int i = 0; i < threadsForGladiators.Count; i++)
+            {
+                if (!threadsForGladiators[i].IsAlive)
+                {
+                    threadsForGladiators[i] = new Thread(tempList[i].GameObject.Update);
+                    threadsForGladiators[i].IsBackground = true;
+                    threadsForGladiators[i].Start();
+                }
+            }
+            
+            if (!inFight && threadsForGladiators.Count > 0)
+            {
+                foreach (Thread thread in threadsForGladiators)
+                {
+                    thread.Abort();
+                }
+                threadsForGladiators.Clear();
+                tempList.Clear();
+            }
             if (newObjects.Count > 0)
             {
                 foreach (GameObject newObj in newObjects)
@@ -312,6 +291,24 @@ namespace EnterTheColiseum
         {
             Resolution.CalculateMatrix(graphics);
         }
+        public void FightStart(List<Gladiator> gladiators)
+        {
+            tempList.AddRange(gladiators);
+            for (int i = 0; i < gladiators.Count; i++)
+            {
+                threadsForGladiators.Add(new Thread(gladiators[i].GameObject.Update));
+                threadsForGladiators[i].IsBackground = true;
+            }
+            inFight = true;
+        }
+        public void FightEnded(List<Gladiator> gladiators)
+        {
+            inFight = false;
+            foreach (Gladiator obj in gladiators)
+            {
+                RemoveGameObject(obj.GameObject);
+            }
+        }
         public void AddGameObject(GameObject gameObject)
         {
             newObjects.Add(gameObject);
@@ -321,7 +318,6 @@ namespace EnterTheColiseum
             objectsToRemove.Add(gameObject);
         }
         //Events
-        public event ResolutionEventHandler ResolutionChangedEvent;
-
+        public event GenericEventHandler ResolutionChangedEvent;
     }
 }

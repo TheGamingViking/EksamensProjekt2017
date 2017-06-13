@@ -32,7 +32,7 @@ namespace EnterTheColiseum
         private void Clicked()
         {
             GameObject returnButton = new GameObject(Vector2.Zero);
-            returnButton.AddComponent(new SpriteRenderer(returnButton, "Exitknap", 0.6f, 1));
+            returnButton.AddComponent(new SpriteRenderer(returnButton, "Exitknap", SpriteData.UIElementDepth, 1));
             returnButton.AddComponent(new Collider(returnButton, false, false));
             returnButton.AddComponent(new Button(returnButton, ButtonType.Return));
             (returnButton.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);

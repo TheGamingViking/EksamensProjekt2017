@@ -73,16 +73,32 @@ namespace EnterTheColiseum
             command = $"create table {tableName}({rows});";
             commander = new SQLiteCommand(command, connection);
             commander.ExecuteNonQuery();
+            
         }
         /// <summary>
-        /// Returns an executing reader, reading from the specified table based on supplied search term for column.
-        /// To retrieve data, use Database.Reader[index].
+        /// Inserts a row into the specified table. When adding a new table to setup, add it to the list below for easy reference.
+        /// List of tables:
+        /// gladiators(name text primary key, strength float, agility float, strategy float, helmet text, armour text, weapon text)
+        /// equipment(name text primary key, attack float, defense float, type text, cost float)
+        /// </summary>
+        /// <remarks>Remember to pass the correct values in a single string.</remarks>
+        /// <param name="tableName"></param>
+        /// <param name="values"></param>
+        static public void Create_Row(string tableName, string values)
+        {
+            command = $"insert into {tableName} values({values});";
+            commander = new SQLiteCommand(command, connection);
+            commander.ExecuteNonQuery();
+        }
+        /// <summary>
+        /// Prepares an executing reader, reading from the specified table based on supplied search term for column.
+        /// To retrieve data, use Database.Reader.
         /// </summary>
         /// <param name="tableName">Specify name of table.</param>
         /// <param name="column">Specify column to search within.</param>
         /// <param name="searchTerm">Specify database search term. Include 'text' when passing text. Pass null if no search term is desired.</param>
         /// <returns></returns>
-        static public SQLiteDataReader Read(string tableName, string column, string searchTerm)
+        static public void Read(string tableName, string column, string searchTerm)
         {
             if (searchTerm != null)
             {
@@ -93,7 +109,7 @@ namespace EnterTheColiseum
                 command = $"select * from {tableName};";
             }
             commander = new SQLiteCommand(command, connection);
-            return reader = commander.ExecuteReader();
+            reader = commander.ExecuteReader();
         }
         /// <summary>
         /// Updates target column of specified table to a target value based on supplied search term.

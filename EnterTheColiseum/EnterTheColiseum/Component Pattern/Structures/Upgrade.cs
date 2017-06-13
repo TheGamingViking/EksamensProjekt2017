@@ -32,7 +32,7 @@ namespace EnterTheColiseum
         private void Clicked()
         {
             GameObject returnButton = new GameObject(Vector2.Zero);
-            returnButton.AddComponent(new SpriteRenderer(returnButton, "Exitknap", 0.6f, 1));
+            returnButton.AddComponent(new SpriteRenderer(returnButton, "Exitknap", SpriteData.UIElementDepth, 1));
             returnButton.AddComponent(new Collider(returnButton, false, false));
             returnButton.AddComponent(new Button(returnButton, ButtonType.Return));
             (returnButton.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
@@ -42,11 +42,11 @@ namespace EnterTheColiseum
             menu.AddComponent(new Menu(menu, (Button)returnButton.GetComponent("Button")));
 
             GameObject lvl2Sprite = new GameObject(new Vector2(530, 300));
-            lvl2Sprite.AddComponent(new SpriteRenderer(lvl2Sprite, "Upgradebtn", 0.05f, 1));
+            lvl2Sprite.AddComponent(new SpriteRenderer(lvl2Sprite, "Upgradebtn", SpriteData.UIElementDepth, 1));
             (lvl2Sprite.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
 
             GameObject upgradeButton = new GameObject(new Vector2(530,300));
-            upgradeButton.AddComponent(new SpriteRenderer(upgradeButton, "EtC arena v2", 0.05f, 1));
+            upgradeButton.AddComponent(new SpriteRenderer(upgradeButton, "EtC arena v2", SpriteData.UIElementDepth, 1));
             upgradeButton.AddComponent(new Collider(upgradeButton, false, false));
             upgradeButton.AddComponent(new Button(upgradeButton, ButtonType.Upgrade));
 

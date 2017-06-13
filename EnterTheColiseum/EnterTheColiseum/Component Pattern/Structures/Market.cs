@@ -40,7 +40,7 @@ namespace EnterTheColiseum
         private void Clicked()
         {
             GameObject returnButton = new GameObject(Vector2.Zero);
-            returnButton.AddComponent(new SpriteRenderer(returnButton, "Exitknap", 0.6f, 1));
+            returnButton.AddComponent(new SpriteRenderer(returnButton, "Exitknap", SpriteData.UIElementDepth, 1));
             returnButton.AddComponent(new Collider(returnButton, false, false));
             returnButton.AddComponent(new Button(returnButton, ButtonType.Return));
             (returnButton.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
@@ -50,14 +50,14 @@ namespace EnterTheColiseum
             menu.AddComponent(new Menu(menu, (Button)returnButton.GetComponent("Button")));
 
             GameObject buy = new GameObject(new Vector2(100, 100));
-            buy.AddComponent(new SpriteRenderer(buy, "buybtn", 0.05f, 1));
+            buy.AddComponent(new SpriteRenderer(buy, "buybtn", SpriteData.UIElementDepth, 1));
             buy.AddComponent(new Collider(buy, false, false));
             buy.AddComponent(new Button(buy, ButtonType.Market));
             (buy.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
             (buy.GetComponent("Collider") as Collider).LoadContent(GameWorld.Instance.Content);
 
             GameObject sell = new GameObject(new Vector2(100, 200));
-            sell.AddComponent(new SpriteRenderer(sell, "selbtn", 0.05f, 1));
+            sell.AddComponent(new SpriteRenderer(sell, "selbtn", SpriteData.UIElementDepth, 1));
             sell.AddComponent(new Collider(sell, false, false));
             sell.AddComponent(new Button(sell, ButtonType.Market));
             (sell.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);

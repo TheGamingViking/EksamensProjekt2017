@@ -44,9 +44,9 @@ namespace EnterTheColiseum
                     gladiator.SoundIsPlaying = true;
                 }
             }
-            catch (NullReferenceException)
+            catch (ArgumentOutOfRangeException)
             {
-                Console.WriteLine("Sound content load failed. ContentLoadException handled.");
+                Console.WriteLine("Index out of range for SoundEffects for no reason at all, we don't really know why it happens, it just does. In any case, the exception was handled, continue on.");
             }
         }
     }
