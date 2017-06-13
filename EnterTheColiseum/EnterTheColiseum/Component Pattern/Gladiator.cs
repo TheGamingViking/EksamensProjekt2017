@@ -153,11 +153,11 @@ namespace EnterTheColiseum
         }
         public void TakeDamage(float damage, Gladiator attacker)
         {
-            /*lock (this)
+            lock (this)
             {
                 if (canTakeDamage)
-                {*/
-                    //canTakeDamage = false;
+                {
+                    canTakeDamage = false;
                     if (currentDirection == Direction.Front)
                     {
                         modifiedPosition = (new Vector2(0, -100));
@@ -196,8 +196,8 @@ namespace EnterTheColiseum
                     health -= damage;
                     Console.WriteLine($"{name}, {health}");
                     //combatStrategy = new TakeDamage(animator);
-                //}
-            //}
+                }
+            }
         }
         private void CalculateStatstics()
         {

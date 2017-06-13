@@ -48,6 +48,10 @@ namespace EnterTheColiseum
             {
                 Console.WriteLine("Index out of range for SoundEffects for no reason at all, we don't really know why it happens, it just does. In any case, the exception was handled, continue on.");
             }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("NullReferenceException for sound file. Handled.");
+            }
         }
     }
 }
