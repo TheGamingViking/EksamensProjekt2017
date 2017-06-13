@@ -155,9 +155,9 @@ namespace EnterTheColiseum
         {
             lock (this)
             {
-                if (canTakeDamage)
+                /*if (canTakeDamage)
                 {
-                    canTakeDamage = false;
+                    canTakeDamage = false;*/
                     if (currentDirection == Direction.Front)
                     {
                         modifiedPosition = (new Vector2(0, -100));
@@ -196,7 +196,7 @@ namespace EnterTheColiseum
                     health -= damage;
                     Console.WriteLine($"{name}, {health}");
                     //combatStrategy = new TakeDamage(animator);
-                }
+                //}
             }
         }
         private void CalculateStatstics()
@@ -273,15 +273,18 @@ namespace EnterTheColiseum
         }
         public void OnCollisionEnter(Collider other)
         {
-            combatStrategy = new Attack(animator, this);
-            canMove = false;
+            if (fight)
+            {
+                combatStrategy = new Attack(animator, this);
+                canMove = false;
+            }
         }
         public void OnCollisionExit(Collider other)
         {
         }
         public void OnCollisionStay(Collider other)
         {
-            if (combatStrategy is Attack)
+            if (combatStrategy is Attack && fight)
             {
                 if (other.GameObject.GetComponent("Gladiator") != null)
                 {

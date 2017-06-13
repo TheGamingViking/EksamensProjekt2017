@@ -19,7 +19,7 @@ namespace EnterTheColiseum
 
         //Constructor
         public Upgrade(GameObject gameObject, Button button) : base(gameObject)
-            {
+        {
             this.button = button;
         }
 

@@ -146,6 +146,9 @@
     <Content Include="Content\Menu baggrund.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\MenuItem.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Nederste lag map 1280x720.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
