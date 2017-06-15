@@ -26,6 +26,7 @@ namespace EnterTheColiseum
         List<Collider> colliders;
         List<GameObject> newObjects;
         List<GameObject> objectsToRemove;
+        List<GameObject> collidersToRemove;
         List<Gladiator> tempList;
         MouseState mouseState;
         float deltaTime;
@@ -72,7 +73,7 @@ namespace EnterTheColiseum
         public bool InFight
         {
             get { return inFight; }
-            set { inFight = value; }
+            internal set { inFight = value; }
         }
         public List<GameObject> GameObjects
         {
@@ -113,6 +114,7 @@ namespace EnterTheColiseum
             colliders = new List<Collider>();
             newObjects = new List<GameObject>();
             objectsToRemove = new List<GameObject>();
+            collidersToRemove = new List<GameObject>();
             soundEffects = new List<SoundEffect>();
             tempList = new List<Gladiator>();
 
@@ -316,6 +318,10 @@ namespace EnterTheColiseum
         public void RemoveGameObject(GameObject gameObject)
         {
             objectsToRemove.Add(gameObject);
+        }
+        public void RemoveCollider(Collider collider)
+        {
+            colliders.Remove(collider);
         }
         //Events
         public event GenericEventHandler ResolutionChangedEvent;

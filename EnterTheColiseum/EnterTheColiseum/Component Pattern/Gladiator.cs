@@ -13,7 +13,6 @@ namespace EnterTheColiseum
     {
         //Fields
         string name;
-        bool fight = false;
         bool canMove = true;
         bool canTakeDamage = true;
         bool soundIsPlaying = false;
@@ -90,7 +89,7 @@ namespace EnterTheColiseum
 
         //Constructor
         //Constructor for combat ready gladiator
-        public Gladiator(GameObject gameObject, string name, bool fight, Colosseum arena) : base(gameObject)
+        public Gladiator(GameObject gameObject, string name, Colosseum arena) : base(gameObject)
         {
             animator = (Animator)GameObject.GetComponent("Animator");
             equipmentReferences = new List<string>();
@@ -98,7 +97,6 @@ namespace EnterTheColiseum
             //enemyList = new List<GameObject>();
             rnd = new Random();
 
-            this.fight = fight;
             this.name = name;
             this.arena = arena;
 
@@ -222,7 +220,7 @@ namespace EnterTheColiseum
         }
         public void AI()
         {
-            while (fight)
+            while (GameWorld.Instance.InFight)
             {
                 if (health <= 0)
                 {
@@ -231,7 +229,6 @@ namespace EnterTheColiseum
                 }
                 if (enemy.Health <= 0)
                 {
-                    fight = false;
                     Thread.Sleep(3000);
                     GameWorld.Instance.FightEnded(arena.GladiatorsInFight);
                     arena.ResetArena();
@@ -273,7 +270,7 @@ namespace EnterTheColiseum
         }
         public void OnCollisionEnter(Collider other)
         {
-            if (fight)
+            if (GameWorld.Instance.InFight)
             {
                 combatStrategy = new Attack(animator, this);
                 canMove = false;
@@ -284,7 +281,7 @@ namespace EnterTheColiseum
         }
         public void OnCollisionStay(Collider other)
         {
-            if (combatStrategy is Attack && fight)
+            if (combatStrategy is Attack && GameWorld.Instance.InFight)
             {
                 if (other.GameObject.GetComponent("Gladiator") != null)
                 {
@@ -296,7 +293,6 @@ namespace EnterTheColiseum
         {
             if (animationName.Contains("Die"))
             {
-                fight = false;
                 thread.Abort();
             }
             if (animationName.Contains("Attack"))

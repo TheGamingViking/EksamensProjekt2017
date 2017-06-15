@@ -34,11 +34,11 @@ namespace EnterTheColiseum
             button.MarketClicked += Clicked;
             fonts = content.Load<SpriteFont>("Fonts");
             //Generate slaves
-            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 5, 7, 10));
+            /*slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 5, 7, 10));
             slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 8, 3, 6));
             slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 9, 1, 10));
             slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 5, 10, 3));
-            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 6, 6, 6));
+            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 6, 6, 6));*/
         }
         private void Clicked()
         {

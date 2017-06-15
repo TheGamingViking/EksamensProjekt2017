@@ -96,7 +96,7 @@ namespace EnterTheColiseum
             gladiator.AddComponent(new SpriteRenderer(gladiator, "EtC placeholder animation 2", SpriteData.GladiatorDepth, SpriteData.GladiatorScale));
             gladiator.AddComponent(new Animator(gladiator));
             gladiator.AddComponent(new Collider(gladiator, false, false));
-            gladiator.AddComponent(new Gladiator(gladiator, "Ains Ooal Gown", true, this));
+            gladiator.AddComponent(new Gladiator(gladiator, "Ains Ooal Gown", this));
             gladiator.Tag = "DoNotUpdate";
             (gladiator.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
             (gladiator.GetComponent("Gladiator") as Gladiator).LoadContent(GameWorld.Instance.Content);
@@ -107,7 +107,7 @@ namespace EnterTheColiseum
             gladiator2.AddComponent(new SpriteRenderer(gladiator2, "EtC Animation v2", SpriteData.GladiatorDepth, SpriteData.GladiatorScale));
             gladiator2.AddComponent(new Animator(gladiator2));
             gladiator2.AddComponent(new Collider(gladiator2, false, false));
-            gladiator2.AddComponent(new Gladiator(gladiator2, "Kappa Pride", true, this));
+            gladiator2.AddComponent(new Gladiator(gladiator2, "Kappa Pride", this));
             gladiator2.Tag = "DoNotUpdate";
             (gladiator2.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
             (gladiator2.GetComponent("Gladiator") as Gladiator).LoadContent(GameWorld.Instance.Content);
