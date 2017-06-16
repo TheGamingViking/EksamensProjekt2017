@@ -34,11 +34,11 @@ namespace EnterTheColiseum
             button.MarketClicked += Clicked;
             fonts = content.Load<SpriteFont>("Fonts");
             //Generate slaves
-            /*slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 5, 7, 10));
+            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 5, 7, 10));
             slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 8, 3, 6));
             slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 9, 1, 10));
             slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 5, 10, 3));
-            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 6, 6, 6));*/
+            slavesToBuy.Add(new Gladiator(null, "Hans Gruber", 6, 6, 6));
         }
         private void Clicked()
         {
@@ -66,7 +66,7 @@ namespace EnterTheColiseum
             (sell.GetComponent("SpriteRenderer") as SpriteRenderer).LoadContent(GameWorld.Instance.Content);
             (sell.GetComponent("Collider") as Collider).LoadContent(GameWorld.Instance.Content);
 
-            /*foreach (Gladiator slave in slavesToBuy)
+            foreach (Gladiator slave in slavesToBuy)
             {
                 GameObject gladiator = new GameObject(new Vector2(61, 60 + slavesToBuy.IndexOf(slave) * 108));
                 gladiator.AddComponent(new SpriteRenderer(gladiator, "MenuItem", SpriteData.UIElementDepth, 1f));
@@ -76,7 +76,7 @@ namespace EnterTheColiseum
                 (gladiator.GetComponent("Collider") as Collider).LoadContent(GameWorld.Instance.Content);
                 GameWorld.Instance.AddGameObject(gladiator);
                 (menu.GetComponent("Menu") as Menu).AddUIElement(gladiator);
-            }*/
+            }
 
             GameWorld.Instance.AddGameObject(menu);
             GameWorld.Instance.AddGameObject(returnButton);
@@ -103,7 +103,7 @@ namespace EnterTheColiseum
         }
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            /*if (GameWorld.Instance.InMenu)
+            if (GameWorld.Instance.InMarket)
             {
                 spriteBatch.DrawString(fonts, "Name:", new Vector2(100, 40), Color.White);
                 spriteBatch.DrawString(fonts, "Strength:", new Vector2(330, 40), Color.White);
@@ -116,7 +116,7 @@ namespace EnterTheColiseum
                     spriteBatch.DrawString(fonts, Convert.ToString(slave.Agility), new Vector2(530, 60 + slavesToBuy.IndexOf(slave) * 108), Color.White);
                     spriteBatch.DrawString(fonts, Convert.ToString(slave.Strategy), new Vector2(730, 60 + slavesToBuy.IndexOf(slave) * 108), Color.White);
                 }
-            }*/
+            }
         }
     }
 }

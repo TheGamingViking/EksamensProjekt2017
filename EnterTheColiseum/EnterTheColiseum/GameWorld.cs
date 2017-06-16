@@ -31,6 +31,7 @@ namespace EnterTheColiseum
         MouseState mouseState;
         float deltaTime;
         bool inMenu = false;
+        bool inMarket = false;
         bool inFight = false;
         public delegate void GenericEventHandler();
         //Sound
@@ -69,6 +70,11 @@ namespace EnterTheColiseum
         {
             get { return inMenu; }
             set { inMenu = value; }
+        }
+        public bool InMarket
+        {
+            get { return inMarket; }
+            set { inMarket = value; }
         }
         public bool InFight
         {

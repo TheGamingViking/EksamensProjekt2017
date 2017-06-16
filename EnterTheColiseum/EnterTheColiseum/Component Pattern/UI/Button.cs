@@ -58,6 +58,7 @@ namespace EnterTheColiseum
                             ColosseumClicked();
                             break;
                         case ButtonType.Market:
+                            GameWorld.Instance.InMarket = true;
                             MarketClicked();
                             break;
                         case ButtonType.Options:
@@ -82,6 +83,7 @@ namespace EnterTheColiseum
                         case ButtonType.Return:
                             ReturnClicked();
                             GameWorld.Instance.InMenu = false;
+                            GameWorld.Instance.InMarket = false;
                             break;
                         case ButtonType.Exit:
                             ExitClicked();
