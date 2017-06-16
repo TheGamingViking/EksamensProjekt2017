@@ -256,7 +256,7 @@ namespace EnterTheColiseum
             animator.CreateAnimation("TakeDamage", new Animation(3, 0, 1, 320, 360, 3, Vector2.Zero));
             animator.CreateAnimation("Walk", new Animation(4, 360, 0, 320, 360, 5, Vector2.Zero));
             animator.CreateAnimation("Die", new Animation(4, 720, 0, 320, 360, 5, Vector2.Zero));
-            animator.CreateAnimation("Attack", new Animation(4, 1080, 0, 320, 360, 5, Vector2.Zero));
+            animator.CreateAnimation("Attack", new Animation(4, 1080, 0, 320, 360, 10, Vector2.Zero));
             animator.PlayAnimation("Idle");
         }
         public void SetEnemies(Gladiator enemy)

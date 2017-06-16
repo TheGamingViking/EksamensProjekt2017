@@ -53,7 +53,7 @@ namespace EnterTheColiseum
                 command = "insert into gladiators values('Ains Ooal Gown', 10, 10, 10, null, null, null);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
-                command = "insert into gladiators values('Kappa Pride', 7, 5, 2, null, null, null);";
+                command = "insert into gladiators values('Kappa Pride', 10, 10, 10, null, null, null);";
                 commander = new SQLiteCommand(command, connection);
                 commander.ExecuteNonQuery();
                 //Insert all equipment in the game into table equipment

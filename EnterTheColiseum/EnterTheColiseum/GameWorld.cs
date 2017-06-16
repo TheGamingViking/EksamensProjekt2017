@@ -138,8 +138,8 @@ namespace EnterTheColiseum
             tavern.AddComponent(new Tavern(tavern, (Button)tavern.GetComponent("Button")));
             gameObjects.Add(tavern);
 
-            GameObject colosseum = new GameObject(new Vector2(555, 115));
-            colosseum.AddComponent(new SpriteRenderer(colosseum, "EtC arena v1", SpriteData.StructureDepth, 0.8f));
+            GameObject colosseum = new GameObject(new Vector2(575, 100));
+            colosseum.AddComponent(new SpriteRenderer(colosseum, "ArenaLvL3", SpriteData.StructureDepth, 0.25f));
             colosseum.AddComponent(new Collider(colosseum, false, true));
             colosseum.AddComponent(new Button(colosseum, ButtonType.Colosseum));
             colosseum.AddComponent(new Colosseum(colosseum, (Button)colosseum.GetComponent("Button")));
@@ -309,6 +309,7 @@ namespace EnterTheColiseum
             foreach (Gladiator obj in gladiators)
             {
                 RemoveGameObject(obj.GameObject);
+                RemoveCollider((Collider)obj.GameObject.GetComponent("Collider"));
             }
         }
         public void AddGameObject(GameObject gameObject)
